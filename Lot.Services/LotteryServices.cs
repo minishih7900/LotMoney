@@ -48,20 +48,39 @@ namespace Study.Services
             return _sqlRepository.GetSelectLotNumber(selectnum, StartDate, EndDate, StartPeriod, EndPeriod);
         }
 
-        public string GetMaxNoServices()
+        public string GetMaxNoServices(string dbName)
         {
-            return _sqlRepository.GetMaxNo();
+            return _sqlRepository.GetMaxNo(dbName);
         }
-        public bool AddNumberServices(LotNumber data)
+
+        /// <summary>
+        /// 新增號碼
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool AddNumberServices_539(LotNumber data)
         {
             bool success = false;
-            List<string> inputNum = new List<string> { data.號碼1, data.號碼2, data.號碼3, data.號碼4, data.號碼5 };
 
             using (var scope = new TransactionScope())
             {
                 success = _sqlRepository.InputLotNumber(data) &&
                           _sqlRepository.InsertCopyNumber(data.開獎日期) && 
                           _sqlRepository.UpdateCopyNumber(data);
+                if (success)
+                    scope.Complete();
+            }
+            return success;
+        }
+        public bool AddNumberServices_EveryDay(LotNumber data)
+        {
+            bool success = false;
+
+            using (var scope = new TransactionScope())
+            {
+                success = _sqlRepository.InputLotNumber_EveryDay(data) &&
+                          _sqlRepository.InsertCopyNumber_EveryDay(data.開獎日期) &&
+                          _sqlRepository.UpdateCopyNumber_EveryDay(data);
                 if (success)
                     scope.Complete();
             }

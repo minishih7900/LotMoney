@@ -69,6 +69,34 @@ namespace Lot.Controllers
 
         #endregion
 
-        
+        #region 新增號碼
+        [HttpGet]
+        public ActionResult AddNumber()
+        {
+            SetMaxNo("TwLot539");
+            LotNumber model = new LotNumber();
+            model.開獎日期 = DateTime.Now.ToString("yyyyMMdd");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddNumber(LotNumber data)
+        {
+            SetMaxNo("TwLot539");
+            if (ModelState.IsValid)
+            {
+                AddStartZone(data);
+                data.期數 = data.開獎日期;
+                data.星期 = YYYYMMDDtoDayOfWeek(data.開獎日期);
+                if (_lotteryService.AddNumberServices_539(data))
+                {
+                    TempData["message"] = "寫入成功";
+                    return RedirectToAction("AddNumber");
+                }
+            }
+            TempData["message"] = "寫入失敗";
+            return View();
+        }
+        #endregion
     }
 }

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Lot.Controllers
 {
-    public class AdministratorController : Controller
+    public class AdminManagerController : Controller
     {
         // GET: Administrator
         public ActionResult Index()

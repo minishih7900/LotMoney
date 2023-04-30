@@ -1,0 +1,109 @@
+﻿@model Study.Models.Models.LotNumber
+
+
+@{
+    ViewBag.Title = "管理者頁面-今彩539新增號碼";
+}
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbTitle">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("index", "AdminManager")">管理者頁面</a></li>
+        <li class="breadcrumb-item active)" aria-current="page">今彩539新增號碼</li>
+    </ol>
+</nav>
+<hr />
+
+@{ Html.EnableClientValidation(); }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="mb-3">
+        最大期數為： @ViewBag.MaxNo
+    </div>
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.開獎日期, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.開獎日期, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.開獎日期, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.號碼1, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.號碼1, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.號碼1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.號碼2, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.號碼2, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.號碼2, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.號碼3, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.號碼3, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.號碼3, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.號碼4, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.號碼4, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.號碼4, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        @Html.LabelFor(model => model.號碼5, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.號碼5, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.號碼5, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+    <div class="mb-3 row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-success" />
+            <input type="reset" value="Reset" class="btn btn-secondary" />
+        </div>
+    </div>
+</div>
+}
+
+@section scripts{
+    @if (TempData["message"] != null)
+    {
+        <script>
+        $(function () {
+            var message =@Html.Raw(Json.Encode(TempData["message"]));
+            alert(message);
+        })
+        </script>
+    }
+    <script>
+        $(function () {
+            $("input[name^='號碼']").change(function () {
+                var checkData = this.value;
+                if (this.value !== "") {
+                    $("input[name!=" + this.name + "]").each(function () {
+                        if (checkData == this.value) {
+                            alert("有重覆，請重新輸入");
+                            return false;
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+}
+

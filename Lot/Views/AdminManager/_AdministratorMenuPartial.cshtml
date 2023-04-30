@@ -1,0 +1,19 @@
+﻿@model string
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbTitle">
+    <ol class="breadcrumb">
+        @if (string.IsNullOrEmpty(Model))
+        {
+            <li class="breadcrumb-item">@ViewBag.Title</li>
+        }
+        else
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("index", "TwLot539")">ViewBag.Title</a></li>
+            <li class="breadcrumb-item active)" aria-current="page">@Model</li>
+        }
+    </ol>
+</nav>
+<div class="d-grid gap-2 d-md-block">
+    <a href="@Url.Action("AddNumber", "TwLot539")" class="btn btn-outline-primary btn-lg"><span>今彩539-新增號碼</span></a>
+    <a href="@Url.Action("AddNumber", "EnLotEveryDay")" class="btn btn-outline-primary btn-lg"><span>加州天天樂-新增號碼</span></a>
+</div>
+

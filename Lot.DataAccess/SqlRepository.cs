@@ -87,9 +87,10 @@ order by 期數 desc";
         public bool InputLotNumber(LotNumber data)
         {
             var sql = @"
-INSERT INTO [dbo].[TwLot59]
+INSERT INTO [dbo].[TwLot539]
            ([期數]
            ,[開獎日期]
+           ,[星期]
            ,[號碼1]
            ,[號碼2]
            ,[號碼3]
@@ -98,6 +99,7 @@ INSERT INTO [dbo].[TwLot59]
      VALUES
            (@期數
            ,@開獎日期
+           ,@星期
            ,@號碼1
            ,@號碼2
            ,@號碼3
@@ -107,18 +109,18 @@ INSERT INTO [dbo].[TwLot59]
             return _dbDapper.NonQuerySQL(sql, data) > 0;
         }
 
-        public string GetMaxNo()
+        public string GetMaxNo(string dbName)
         {
-            var sql = @"select max(期數) from [dbo].[TwLot59]";
+            var sql = $"select max(期數) from [dbo].[{dbName}]";
             return _dbDapper.ExecuteScalarSQL<string>(sql, null);
         }
         public bool InsertCopyNumber(string data)
         {
             var sql = @"
-            IF(NOT EXISTS(SELECT top 1 * FROM [dbo].[TwLot59_StoredCount] ))
+            IF(NOT EXISTS(SELECT top 1 * FROM [dbo].[TwLot539_StoredCount] ))
 BEGIN
-	 insert into [dbo].[TwLot59_StoredCount]
-	(日期,[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13]
+	 insert into [dbo].[TwLot539_StoredCount]
+	(日期,[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13]
       ,[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26]
       ,[27],[28],[29],[30],[31],[32],[33],[34],[35],[36],[37],[38],[39])
 	  VALUES
@@ -126,17 +128,17 @@ BEGIN
 END	
     ELSE
 BEGIN
-    insert into [dbo].[TwLot59_StoredCount]
+    insert into [dbo].[TwLot539_StoredCount]
 SELECT TOP (1) @data
-      ,[1]+1 as [1]
-      ,[2]+1 as [2]
-      ,[3]+1 as [3]
-      ,[4]+1 as [4]
-      ,[5]+1 as [5]
-      ,[6]+1 as [6]
-      ,[7]+1 as [7]
-      ,[8]+1 as [8]
-      ,[9]+1 as [9]
+      ,[01]+1 as [01]
+      ,[02]+1 as [02]
+      ,[03]+1 as [03]
+      ,[04]+1 as [04]
+      ,[05]+1 as [05]
+      ,[06]+1 as [06]
+      ,[07]+1 as [07]
+      ,[08]+1 as [08]
+      ,[09]+1 as [09]
       ,[10]+1 as [10]
       ,[11]+1 as [11]
       ,[12]+1 as [12]
@@ -167,7 +169,7 @@ SELECT TOP (1) @data
       ,[37]+1 as [37]
       ,[38]+1 as [38]
       ,[39]+1 as [39]
-       FROM [MyDB].[dbo].[TwLot59_StoredCount] order by 日期 desc
+       FROM [dbo].[TwLot539_StoredCount] order by 日期 desc
 END";
             var param = new Dictionary<string, object>();
             param.Add("data", data);
@@ -179,7 +181,7 @@ END";
         {
             var sql = @"
             DECLARE @TSQL NVARCHAR(4000)
-SET @TSQL =	'update [dbo].[TwLot59_StoredCount]
+SET @TSQL =	'update [dbo].[TwLot539_StoredCount]
 set ' + @num1 + '=0,' + @num2 + '=0,' + @num3 +'=0,' + @num4 + '=0,' + @num5 + '=0
 where 日期=' + @date
 EXEC SP_EXECUTESQL @TSQL";
@@ -215,6 +217,111 @@ order by 期數 desc";
 
 
             return _dbDapper.QueryList<LotNumber>(sql, null);
+        }
+
+        public bool InputLotNumber_EveryDay(LotNumber data)
+        {
+            var sql = @"
+INSERT INTO [dbo].[EnLotEveryDay]
+           ([期數]
+           ,[開獎日期]
+           ,[星期]
+           ,[號碼1]
+           ,[號碼2]
+           ,[號碼3]
+           ,[號碼4]
+           ,[號碼5])
+     VALUES
+           (@期數
+           ,@開獎日期
+           ,@星期
+           ,@號碼1
+           ,@號碼2
+           ,@號碼3
+           ,@號碼4
+           ,@號碼5)
+";
+            return _dbDapper.NonQuerySQL(sql, data) > 0;
+        }
+        public bool InsertCopyNumber_EveryDay(string data)
+        {
+            var sql = @"
+            IF(NOT EXISTS(SELECT top 1 * FROM [dbo].[EnLotEveryDay_StoredCount] ))
+BEGIN
+	 insert into [dbo].[EnLotEveryDay_StoredCount]
+	(日期,[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13]
+      ,[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26]
+      ,[27],[28],[29],[30],[31],[32],[33],[34],[35],[36],[37],[38],[39])
+	  VALUES
+	  ( @data,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+END	
+    ELSE
+BEGIN
+    insert into [dbo].[EnLotEveryDay_StoredCount]
+SELECT TOP (1) @data
+      ,[01]+1 as [01]
+      ,[02]+1 as [02]
+      ,[03]+1 as [03]
+      ,[04]+1 as [04]
+      ,[05]+1 as [05]
+      ,[06]+1 as [06]
+      ,[07]+1 as [07]
+      ,[08]+1 as [08]
+      ,[09]+1 as [09]
+      ,[10]+1 as [10]
+      ,[11]+1 as [11]
+      ,[12]+1 as [12]
+      ,[13]+1 as [13]
+      ,[14]+1 as [14]
+      ,[15]+1 as [15]
+      ,[16]+1 as [16]
+      ,[17]+1 as [17]
+      ,[18]+1 as [18]
+      ,[19]+1 as [19]
+      ,[20]+1 as [20]
+      ,[21]+1 as [21]
+      ,[22]+1 as [22]
+      ,[23]+1 as [23]
+      ,[24]+1 as [24]
+      ,[25]+1 as [25]
+      ,[26]+1 as [26]
+      ,[27]+1 as [27]
+      ,[28]+1 as [28]
+      ,[29]+1 as [29]
+      ,[30]+1 as [30]
+      ,[31]+1 as [31]
+      ,[32]+1 as [32]
+      ,[33]+1 as [33]
+      ,[34]+1 as [34]
+      ,[35]+1 as [35]
+      ,[36]+1 as [36]
+      ,[37]+1 as [37]
+      ,[38]+1 as [38]
+      ,[39]+1 as [39]
+       FROM [dbo].[EnLotEveryDay_StoredCount] order by 日期 desc
+END";
+            var param = new Dictionary<string, object>();
+            param.Add("data", data);
+
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
+        }
+        public bool UpdateCopyNumber_EveryDay(LotNumber data)
+        {
+            var sql = @"
+            DECLARE @TSQL NVARCHAR(4000)
+SET @TSQL =	'update [dbo].[EnLotEveryDay_StoredCount]
+set ' + @num1 + '=0,' + @num2 + '=0,' + @num3 +'=0,' + @num4 + '=0,' + @num5 + '=0
+where 日期=' + @date
+EXEC SP_EXECUTESQL @TSQL";
+            var param = new Dictionary<string, object>();
+            param.Add("num1", "[" + data.號碼1 + "]");
+            param.Add("num2", "[" + data.號碼2 + "]");
+            param.Add("num3", "[" + data.號碼3 + "]");
+            param.Add("num4", "[" + data.號碼4 + "]");
+            param.Add("num5", "[" + data.號碼5 + "]");
+            param.Add("date", data.開獎日期);
+
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
         #endregion
 

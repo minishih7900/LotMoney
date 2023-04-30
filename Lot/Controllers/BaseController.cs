@@ -2,7 +2,9 @@
 using Study.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Web;
 using System.Web.Mvc;
 
@@ -43,11 +45,11 @@ namespace Lot.Controllers
         }
 
         /// <summary>
-        /// 取得最大期數+1
+        /// 取得最大期數
         /// </summary>
-        protected void SetMaxNo()
+        protected void SetMaxNo(string dbName)
         {
-            ViewBag.MaxNo = (Convert.ToUInt32(_lotteryService.GetMaxNoServices()) + 1).ToString().PadLeft(8, '0');
+            ViewBag.MaxNo = (Convert.ToUInt32(_lotteryService.GetMaxNoServices(dbName))).ToString().PadLeft(8, '0');
         }
 
         /// <summary>
@@ -100,6 +102,26 @@ namespace Lot.Controllers
             data = data.TrimStart('0');
             return data;
         }
-        #endregion
+
+        protected void AddStartZone(LotNumber data)
+        {
+            data.號碼1 = data.號碼1.PadLeft(2, '0');
+            data.號碼2 = data.號碼2.PadLeft(2, '0');
+            data.號碼3 = data.號碼3.PadLeft(2, '0');
+            data.號碼4 = data.號碼4.PadLeft(2, '0');
+            data.號碼5 = data.號碼5.PadLeft(2, '0');
+        }
+        /// <summary>
+        /// yyyymmdd轉換星期，且刪除「週」
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected string YYYYMMDDtoDayOfWeek(string data)
+        {
+            DateTime date = DateTime.ParseExact(data, "yyyyMMdd", null);
+            string taiwanDayOfWeek = date.ToString("ddd", new CultureInfo("zh-TW"));
+            return taiwanDayOfWeek.Replace("週","");
+        }
     }
+        #endregion
 }

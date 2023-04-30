@@ -9,11 +9,10 @@ namespace Study.Models.Models
 {
     public class LotNumber
     {
-        [Required]
-        [RegularExpression("[0-9]*", ErrorMessage = "This field requires numeric character.")]
         public string 期數 { get; set; }
         [Required]
         public string 開獎日期 { get; set; }
+        public string 星期 { get; set; }
         [Required]
         public string 號碼1 { get; set; }
         [Required]
