@@ -4,7 +4,6 @@
 
 @{
     ViewBag.Title = "查詢號碼";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section css{
@@ -52,10 +51,10 @@
     </style>
 }
 
-<h2>查詢號碼 </h2>
-<div>
-    @Html.ActionLink("回上一頁", "Index", null, new { @class = "btn btn-secondary" })
+<div class="row">
+    @Html.Partial("_TwLot539MenuPartial", "查詢號碼")
 </div>
+<hr />
 <div class="container row">
     @using (Html.BeginForm("QueryNumber", "TwLot539", FormMethod.Post, new { id = "QueryNumberList" }))
     {
@@ -139,28 +138,28 @@
 @section scripts{
     <script>
 
-        //$(function () {
-        //    $('.pagination>li>a[href]').each(function (i, item) {
-        //        //var page = $(item).attr('href').replace('/Lottery/QueryNumber?Page=', '');
-        //        //let params = new URL('https://example.com?foo=1&bar=2').searchParams;
-        //        //params.get('foo'); // "1"
-        //        //params.get('bar'); // "2"
+            //$(function () {
+            //    $('.pagination>li>a[href]').each(function (i, item) {
+            //        //var page = $(item).attr('href').replace('/Lottery/QueryNumber?Page=', '');
+            //        //let params = new URL('https://example.com?foo=1&bar=2').searchParams;
+            //        //params.get('foo'); // "1"
+            //        //params.get('bar'); // "2"
 
-        //        var page = $(item).html();
-        //        $(item).attr('href', '#').click(function () { postPage(page); });
+            //        var page = $(item).html();
+            //        $(item).attr('href', '#').click(function () { postPage(page); });
 
-        //    });
-        //});
+            //    });
+            //});
 
-        //function postPage(page) {
-        //    var targetFormId = '#QueryNumberList';
-        //    if ($(targetFormId).length > 0) {
-        //        $('<input>')
-        //            .attr({ type: 'hidden', id: 'PageIndex', name: 'Page', value: page })
-        //            .appendTo($(targetFormId));
-        //        $(targetFormId).submit();
-        //    }
-        //};
+            //function postPage(page) {
+            //    var targetFormId = '#QueryNumberList';
+            //    if ($(targetFormId).length > 0) {
+            //        $('<input>')
+            //            .attr({ type: 'hidden', id: 'PageIndex', name: 'Page', value: page })
+            //            .appendTo($(targetFormId));
+            //        $(targetFormId).submit();
+            //    }
+            //};
 
     </script>
 }

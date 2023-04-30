@@ -18,3 +18,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.breadcrumbTitle {
+    font-size: 2em;
+}

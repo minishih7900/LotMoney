@@ -16,9 +16,10 @@
     </style>
 }
 
-<h2>熱門牌</h2>
-<div class="FunctionKey">
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-primary" })
+
+
+<div class="row">
+    @Html.Partial("_TwLot539MenuPartial", "熱門牌")
 </div>
 <hr />
 <div class="container">
@@ -27,17 +28,17 @@
         {
             <div class="row">
                 <div class="col-lg-3">
-                    
-                        <label for="StartDate" class="form-label"><b>開始日期</b></label>
-                        <input type="text" class="form-control" placeholder="格式如：20190101" name="StartDate" maxlength="8" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
-                        <label for="StartDate" class="form-label"><b>結束日期</b></label>
-                        <input type="text" class="form-control" placeholder="格式如：20190101" name="EndDate" maxlength="8" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
-                 </div> 
+
+                    <label for="StartDate" class="form-label"><b>開始日期</b></label>
+                    <input type="text" class="form-control" placeholder="格式如：20190101" name="StartDate" maxlength="8" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
+                    <label for="StartDate" class="form-label"><b>結束日期</b></label>
+                    <input type="text" class="form-control" placeholder="格式如：20190101" name="EndDate" maxlength="8" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
+                </div>
                 <div class="col-lg-3">
-                        <label for="StartDate" class="form-label"><b>開始期數</b></label>
-                        <input type="text" class="form-control" placeholder="請輸入開始期數 格式如：1" name="StartPeriod" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
-                        <label for="StartDate" class="form-label"><b>結束期數</b></label>
-                        <input type="text" class="form-control" placeholder="請輸入結束期數 格式如：1" name="EndPeriod" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
+                    <label for="StartDate" class="form-label"><b>開始期數</b></label>
+                    <input type="text" class="form-control" placeholder="請輸入開始期數 格式如：1" name="StartPeriod" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
+                    <label for="StartDate" class="form-label"><b>結束期數</b></label>
+                    <input type="text" class="form-control" placeholder="請輸入結束期數 格式如：1" name="EndPeriod" oninput="value=value.replace(/[^\d]/g,'')" autocomplete="off">
                 </div>
                 <div class="col-lg-6">
                     <div class="col-lg-6">

@@ -123,6 +123,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdministratorController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EnLotEveryDayController.cs" />
     <Compile Include="Controllers\HKLotMarkSixController.cs" />
@@ -191,10 +193,13 @@
     <Content Include="Views\TwLot539\QueryNumber.cshtml" />
     <Content Include="Views\TwLot539\HotNumber.cshtml" />
     <Content Include="Views\EnLotEveryDay\HotNumber.cshtml" />
+    <Content Include="Views\TwLot539\_TwLot539MenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\Administrator\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

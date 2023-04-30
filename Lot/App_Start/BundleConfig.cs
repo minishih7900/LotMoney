@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Optimization;
+using System.Web.UI.WebControls;
 
 namespace Lot
 {
@@ -27,4 +28,5 @@ namespace Lot
                       "~/Content/site.css"));
         }
     }
+
 }
