@@ -19,9 +19,10 @@ namespace Study.Models.Models
         public int Page { get; set; }  // 頁碼
 
         public List<LotNumber> LotNumberNoPage { get; set; }  // 符合條件資料不用分頁
+        public string Submit { get; set; }  // 確定按鈕
 
-    // Constructors
-    public LotteryViewModel()
+        // Constructors
+        public LotteryViewModel()
         {
             StartDate = string.Empty;
             EndDate = string.Empty;

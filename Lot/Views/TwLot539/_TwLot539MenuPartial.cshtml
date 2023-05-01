@@ -1,6 +1,6 @@
 ﻿@model string
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbTitle">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" style="margin:0px">
         @if (string.IsNullOrEmpty(Model))
         {
             <li class="breadcrumb-item">今彩539</li>
@@ -12,13 +12,33 @@
         }
     </ol>
 </nav>
-<div class="d-grid gap-2 d-md-block">
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="">選項</span>
+        </button>
+        <div class="collapse navbar-collapse mt-1" id="navbarNav">
 
-    <a href="@Url.Action("QueryNumber", "TwLot539")" class="btn btn-outline-primary btn-lg"><span>查詢號碼</span></a>
+            <a href="@Url.Action("QueryNumber", "TwLot539")" class="btn btn-outline-primary btn-lg m-1 " style="display:block"><span>查詢號碼</span></a>
 
-    <a href="@Url.Action("QuerySelectNumberCount", "TwLot539")" class="btn btn-outline-primary btn-lg "><span>最合數字</span></a>
+            <a href="@Url.Action("QueryNumberNoPage", "TwLot539")" class="btn btn-outline-primary btn-lg m-1" style="display:block"><span>查詢號碼不分頁</span></a>
 
-    <a href="@Url.Action("HotNumber", "TwLot539")" class="btn btn-outline-primary btn-lg "><span>熱門牌</span></a>
-   
-</div>
+            <a href="@Url.Action("QuerySelectNumberCount", "TwLot539")" class="btn btn-outline-primary btn-lg m-1 " style="display:block"><span>最合數字</span></a>
+
+            <a href="@Url.Action("HotNumber", "TwLot539")" class="btn btn-outline-primary btn-lg m-1" style="display:block"><span>熱門牌</span></a>
+        </div>
+    </div>
+</nav>
+
+@*<div class="d-grid gap-2 d-md-block">
+
+        <a href="@Url.Action("QueryNumber", "TwLot539")" class="btn btn-outline-primary btn-lg"><span>查詢號碼</span></a>
+
+        <a href="@Url.Action("QueryNumberNoPage", "TwLot539")" class="btn btn-outline-primary btn-lg"><span>查詢號碼不分頁</span></a>
+
+        <a href="@Url.Action("QuerySelectNumberCount", "TwLot539")" class="btn btn-outline-primary btn-lg "><span>最合數字</span></a>
+
+        <a href="@Url.Action("HotNumber", "TwLot539")" class="btn btn-outline-primary btn-lg "><span>熱門牌</span></a>
+
+    </div>*@
 

@@ -49,6 +49,40 @@ namespace Lot.Controllers
         }
         #endregion
 
+        #region 查詢號碼不分頁
+        [HttpGet]
+        public ActionResult QueryNumberNoPage()
+        {
+            // 進入搜尋頁面 不主動撈取資料
+            LotteryViewModel viewModel = new LotteryViewModel();
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult QueryNumberNoPage(LotteryViewModel data)
+        {
+            // 從資料庫撈資料
+            List<LotNumber> DBdata = _lotteryService.GetNumberServices();
+
+            //
+            if (!string.IsNullOrEmpty(data.Submit))
+            {
+                data.LotNumberNoPage = DBdata.Where(p => p.開獎日期.StartsWith(data.Submit)).ToList();
+                return View(data);
+            }
+
+            // 當日期符合開始與結束日期
+            if (!string.IsNullOrWhiteSpace(data.StartDate) && !string.IsNullOrWhiteSpace(data.EndDate))
+            {
+                data.LotNumberNoPage = DBdata.Where(p => p.開獎日期.CompareTo(data.StartDate) >= 0 && p.開獎日期.CompareTo(data.EndDate) <= 0).OrderBy(m => m.開獎日期).ToList();
+            }
+            else
+            {
+                data.LotNumberNoPage = DBdata.OrderBy(x => x.開獎日期).ToList();
+            }
+            return View(data);
+        }
+        #endregion
+
         #region 熱門牌
         [HttpGet]
         public ActionResult HotNumber()

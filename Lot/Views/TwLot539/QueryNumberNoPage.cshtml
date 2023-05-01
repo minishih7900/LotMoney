@@ -1,0 +1,215 @@
+﻿@model  Study.Models.Models.LotteryViewModel
+@{
+    ViewBag.Title = "今彩539 - 查詢號碼不分頁";
+}
+
+@section css{
+    <style type="text/css">
+        .colNum {
+            width: 50px;
+            margin: 2px 4px 2px 4px;
+        }
+
+        .QueryConditions {
+            background-color: #F0F0F0;
+            border-radius: 10px;
+        }
+
+        .form-group > input[type="submit"] {
+            display: block;
+            margin-top: 25px;
+        }
+
+        #demo::after, #demo::before {
+            padding-top: 10px;
+        }
+
+        .btn-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 1;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+        }
+
+            .btn-top:hover {
+                background-color: #555;
+            }
+    </style>
+}
+<div class="row">
+    @Html.Partial("_TwLot539MenuPartial", "查詢號碼不分頁")
+</div>
+<hr />
+<div class="row">
+    @using (Html.BeginForm("QueryNumberNoPage", "TwLot539", FormMethod.Post, new { id = "QueryNumberList" }))
+    {
+        <div class="mb-2">
+            <button data-bs-toggle="collapse" href="#demo" class="btn btn-primary" aria-expanded="false" aria-controls="collapseExample">查詢條件</button>
+            <button id="clear" class="btn btn-primary">清除</button>
+            <input type="submit" name="submit" value=@DateTime.Now.ToString("yyyy") class="btn btn-warning" />
+            <button id="btnTop" class="btn-top" title="回到最頂端"><i class="fa fa-chevron-up"></i></button>
+        </div>
+        <div class="QueryConditions">
+
+            <div class="container form-inline collapse" id="demo">
+                <div class="row mb-2">
+                    <label for="StartDate"><b>開始日期</b></label>
+                    <input type="text" class="form-control" placeholder="格式如：20190101" name="StartDate" pattern="\d{8}" oninput="value=value.replace(/[^\d]/g,'')">
+                </div>
+                <div class="row mb-2">
+                    <label for="StartDate"><b>結束日期</b></label>
+                    <input type="text" class="form-control" placeholder="格式如：20190101" name="EndDate" pattern="\d{8}" oninput="value=value.replace(/[^\d]/g,'')">
+                </div>
+                <div class="row mb-2">
+                    <input type="submit" name="submit" value="Search" class="btn btn-secondary" />
+                </div>
+            </div>
+            
+        </div>
+    }
+        <div class="row mt-2 mx-1 ">
+            <input class="form-control colNum" id="Num1" type="text">
+            <input class="form-control colNum" id="Num2" type="text">
+            <input class="form-control colNum" id="Num3" type="text">
+            <input class="form-control colNum" id="Num4" type="text">
+            <input class="form-control colNum" id="Num5" type="text">
+            <input class="form-control colNum" id="Num6" type="text">
+            <input class="form-control colNum" id="Num7" type="text">
+            <input class="form-control colNum" id="Num8" type="text">
+            <input class="form-control colNum" id="Num9" type="text">
+            <input class="form-control colNum" id="Num10" type="text">
+            <input class="form-control colNum" id="Num11" type="text">
+            <input class="form-control colNum" id="Num12" type="text">
+        </div>
+        <br />
+        <div class="tableT2">
+            @if (Model.LotNumberNoPage != null && Model.LotNumberNoPage.Count() > 0)
+            {
+
+                <table class="table table-hover" id="tableT2">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().開獎日期)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().星期)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼1)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼2)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼3)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼4)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼5)
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.LotNumberNoPage)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.開獎日期)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.星期)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.號碼1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.號碼2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.號碼3)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.號碼4)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.號碼5)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+@section scripts{
+    <script>
+        $(function () {
+            $(".colNum").change(function (event) {
+                //alert(event.target.id);
+                //alert(event.target.value);
+                $("input[id]").each(function () {
+                    show($(this).val());
+                });
+            });
+            $("#clear").click(function () {
+                $("input[id]").each(function () {
+                    $(this).val("");
+                    show("clear");
+                });
+            })
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('.btn-top').fadeIn();
+                } else {
+                    $('.btn-top').fadeOut();
+                }
+            });
+
+            $('.btn-top').click(function () {
+                $('html, body').animate({ scrollTop: 0 }, 800);
+                return false;
+            });
+        })
+
+        function show(key) {
+            var TAB = document.getElementById("tableT2");
+            if (TAB === null) {
+                return;
+            }
+            //表格行数
+            var ROW = TAB.rows.length;
+            //表格列数
+            //var CELL = TAB.rows.item(0).cells.length ;
+            //alert("行数"+ROW+" ,列数"+CELL);
+            for (var i = 1; i < ROW; i++) {
+                // 获取每一行的第一列的值
+                for (var j = 2; j < 7; j++) {
+                    //console.log(TAB.rows[i].cells[j].innerHTML.trim());
+                    if (TAB.rows[i].cells[j].innerHTML.trim() == key) {
+                        TAB.rows[i].cells[j].style.color = "red";
+                        TAB.rows[i].cells[j].style.fontWeight = "bold";
+                    }
+                    if (key == "clear") {
+                        TAB.rows[i].cells[j].style.color = "";
+                        TAB.rows[i].cells[j].style.fontWeight = "";
+                    }
+                }
+            }
+        }
+
+    </script>
+}
+

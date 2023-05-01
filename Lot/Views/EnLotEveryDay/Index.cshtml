@@ -3,15 +3,6 @@
     ViewBag.Title = "加州天天樂";
 }
 
-<h2>加州天天樂</h2>
-
-<div class="d-grid gap-2 d-md-block">
-
-    <a href="@Url.Action("QueryNumber", "EnLotEveryDay")" class="btn btn-outline-primary btn-lg"><span>查詢號碼</span></a>
-
-    <a href="@Url.Action("QuerySelectNumberCount", "EnLotEveryDay")" class="btn btn-outline-primary btn-lg "><span>最合數字</span></a>
-
-    <a href="@Url.Action("HotNumber", "EnLotEveryDay")" class="btn btn-outline-primary btn-lg "><span>熱門牌</span></a>
-
-    <a href="@Url.Action("AddNumber", "TwLot539")" class="btn btn-outline-primary btn-lg "><span>新增號碼</span></a>
+<div class="row">
+    @Html.Partial("_EnLotEveryDayMenuPartial", "")
 </div>
