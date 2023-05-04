@@ -208,6 +208,9 @@
     <Content Include="Views\EnLotEveryDay\AddNumber.cshtml" />
     <Content Include="Views\EnLotEveryDay\_EnLotEveryDayMenuPartial.cshtml" />
     <Content Include="Views\TwLot539\QueryNumberNoPage.cshtml" />
+    <Content Include="Views\EnLotEveryDay\QueryNumber.cshtml" />
+    <Content Include="Views\TwLot539\QuerySelectNumberCount.cshtml" />
+    <Content Include="Views\EnLotEveryDay\QuerySelectNumberCount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using PagedList.Mvc;
 
-namespace Study.Models.Models
+
+namespace Lot.Models.Models
 {
     public class LotteryViewModel
     {

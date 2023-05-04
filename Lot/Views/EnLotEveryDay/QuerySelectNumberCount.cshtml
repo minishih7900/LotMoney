@@ -1,6 +1,6 @@
 ﻿@model      Lot.Models.Models.SelectLotNumber
 @{
-    ViewBag.Title = "今彩539-熱門牌";
+    ViewBag.Title = "加州天天樂-最合數字";
 }
 
 @section css{
@@ -15,45 +15,66 @@
         }
     </style>
 }
-
-
-
 <div class="row">
-    @Html.Partial("_TwLot539MenuPartial", "熱門牌")
+    @Html.Partial("_EnLotEveryDayMenuPartial", "最合數字")
 </div>
 <hr />
-<div class="container">
-    <div>
-        @using (Html.BeginForm("HotNumber", "TwLot539", FormMethod.Post, new { @role = "form", @class = "" }))
+<!--第1個表格-->
+<div class="row">
+    <div class="QueryConditions">
+        @using (Html.BeginForm("QuerySelectNumberCount", "EnLotEveryDay", FormMethod.Post, new { @role = "form", @class = "" }))
         {
-            <div class="row">
+            <div class="col-lg-6">
                 <div class="col-lg-6">
-                    <div class="col-lg-6">
-                        <label for="StartDate" class="form-label"><b>開始到結束期數</b></label>
-                        <input type="text" class="form-control" readonly value="@ViewBag.Data">
-                    </div>
-                    <div class="col-lg-6">
-                    </div>
+                    <label for="StartDate"><b>開始到結束期數</b></label>
+                    <input type="text" class="form-control" readonly value="@ViewBag.Data">
+                    <br />
+                    @Html.CheckBoxFor(m => m.nowYear)
+                    <label for="vehicle1">統計今年資料</label><br>
+                    @ViewBag.Message
+                    <br />
                 </div>
-            </div>
-            <div class="row" style="display:inline-block">
-                <div class="mt-2 mb-2" >
-                    <label><b>點選期數：</b>@ViewBag.Message</label>
-                </div>
-                <div class="col-lg-12">
-                    <input class="btn btn-warning" name="PeriodNum" type="submit" id="selectnum" value=10 />
-                    <input class="btn btn-warning" name="PeriodNum" type="submit" id="selectnum" value=30 />
-                    <input class="btn btn-warning" name="PeriodNum" type="submit" id="selectnum" value=60 />
-                    <input class="btn btn-warning" name="PeriodNum" type="submit" id="selectnum" value=90 />
-                    <input class="btn btn-warning" name="PeriodNum" type="submit" id="selectnum" value=All />
+                <div class="col-lg-6">
                 </div>
             </div>
 
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (int j = 0; j < 10; j++)
+                    {
+                        <tr>
+                            @for (int i = 0; i < 4; i++)
+                            {
+                                <th scope="row">
+                                    <input class="btn btn-warning" name="selectnum" type="submit" id="selectnum" value=@i@j />
+                                </th>
+                                string dd = @Convert.ToString(i) + Convert.ToString(j);
+                                <td>@Model.selectNumberCountDarry[int.Parse(dd)]</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
         }
     </div>
-    <!------------------------------------------------------------------------------------->
-    <br />
+    <!--第2個表格-->
     <div class="row">
+
         <div class="col-md-3">
             <table class="table table-hover" style="width:100%">
                 <thead style="background-color:#BBFFEE">
@@ -64,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model.selectNumberCountListOrderBy.Count != 0)
                     {
                         for (int i = 0; i < 10; i++)
                         {
@@ -89,7 +110,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model.selectNumberCountListOrderBy.Count != 0)
                     {
                         for (int i = 10; i < 20; i++)
                         {
@@ -114,7 +135,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model.selectNumberCountListOrderBy.Count != 0)
                     {
                         for (int i = 20; i < 30; i++)
                         {
@@ -139,7 +160,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model.selectNumberCountListOrderBy.Count != 0)
                     {
                         for (int i = 30; i < 39; i++)
                         {
@@ -154,9 +175,8 @@
             </table>
         </div>
     </div>
+
 </div>
-
-
 
 @section scripts{
     <script>
@@ -166,7 +186,6 @@
                 $(this).children('td').css("font-weight", "bold");
             }
         }
-        )
+      )
     </script>
-
 }

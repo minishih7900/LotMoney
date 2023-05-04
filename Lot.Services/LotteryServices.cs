@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Study.DataAccess;
-using Study.Models.Models;
+using Lot.DataAccess;
 using System.Transactions;
 using System.Globalization;
+using Lot.Models.Models;
 
 namespace Study.Services
 {
@@ -28,6 +28,15 @@ namespace Study.Services
             return _sqlRepository.GetLotNumberNewTop_EveryDay(newCount);
         }
         /// <summary>
+        /// 取得熱門30期資料
+        /// </summary>
+        /// <param name="newCount"></param>
+        /// <returns></returns>
+        public dynamic GetHot30_EveryDay(string newCount)
+        {
+            return _sqlRepository.GetHot30_EveryDay(newCount);
+        }
+        /// <summary>
         /// 依開始日期結束日期查詢筆數
         /// </summary>
         /// <param name="StartDate"></param>
@@ -37,15 +46,23 @@ namespace Study.Services
         {
             return _sqlRepository.GetLotNumber(StartDate, EndDate);
         }
-        public List<LotNumber> GetNumberServices()
+
+        public List<LotNumber> GetNumberServices_539()
         {
             return _sqlRepository.GetLotNumber();
         }
-        public List<LotNumber> GetNumberListServices(string selectnum, string StartDate, string EndDate, string StartPeriod, string EndPeriod)
+        public List<LotNumber> GetNumberServices_EveryDay()
         {
-            StartPeriod = StartPeriod.PadLeft(8, '0');
-            EndPeriod = EndPeriod.PadLeft(8, '0');
-            return _sqlRepository.GetSelectLotNumber(selectnum, StartDate, EndDate, StartPeriod, EndPeriod);
+            return _sqlRepository.GetLotNumber_EveryDay();
+        }
+
+        public List<LotNumber> GetNumberListServices_539(string selectnum, string StartDate, string EndDate)
+        {
+            return _sqlRepository.GetSelectLotNumber(selectnum, StartDate, EndDate);
+        }
+        public List<LotNumber> GetNumberListServices_EveryDay(string selectnum, string StartDate, string EndDate)
+        {
+            return _sqlRepository.GetSelectLotNumber_EveryDay(selectnum, StartDate, EndDate);
         }
 
         public string GetMaxNoServices(string dbName)
@@ -72,7 +89,7 @@ namespace Study.Services
             }
             return success;
         }
-        public bool AddNumberServices_EveryDay(LotNumber data)
+        public bool AddNumberServices_EveryDay(LotNumber data, SelectHot30 hot30)
         {
             bool success = false;
 
@@ -80,7 +97,8 @@ namespace Study.Services
             {
                 success = _sqlRepository.InputLotNumber_EveryDay(data) &&
                           _sqlRepository.InsertCopyNumber_EveryDay(data.開獎日期) &&
-                          _sqlRepository.UpdateCopyNumber_EveryDay(data);
+                          _sqlRepository.UpdateCopyNumber_EveryDay(data) &&
+                          _sqlRepository.InsertHot30_EveryDay(hot30);
                 if (success)
                     scope.Complete();
             }

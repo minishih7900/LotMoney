@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Study.Models.Models
+namespace Lot.Models.Models
 {
     [Table("TwLot59_StoredCount")]
     public partial class TwLot59_StoredCount

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Study.Models.Models
+namespace Lot.Models.Models
 {
     [Table("HkLot49_StoredCount")]
     public partial class HkLot49_StoredCount

@@ -1,6 +1,5 @@
-﻿using PagedList;
-using Study.Models.Models;
-using Study.Services;
+﻿using Lot.Models.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
@@ -25,7 +24,7 @@ namespace Lot.Controllers
             // 進入搜尋頁面 不主動撈取資料
             LotteryViewModel viewModel = new LotteryViewModel();
             // 從資料庫撈資料
-            List<LotNumber> DBdata = _lotteryService.GetNumberServices();
+            List<LotNumber> DBdata = _lotteryService.GetNumberServices_539();
             viewModel.LotNumber = DBdata.OrderByDescending(x => x.開獎日期).ToPagedList(page, PageSize);
             return View(viewModel);
         }
@@ -33,7 +32,7 @@ namespace Lot.Controllers
         public ActionResult QueryNumber(LotteryViewModel data)
         {
             // 從資料庫撈資料
-            List<LotNumber> DBdata = _lotteryService.GetNumberServices();
+            List<LotNumber> DBdata = _lotteryService.GetNumberServices_539();
             data.Page = data.Page == 0 ? 2 : data.Page + 1;
 
             // 當日期符合開始與結束日期
@@ -61,7 +60,7 @@ namespace Lot.Controllers
         public ActionResult QueryNumberNoPage(LotteryViewModel data)
         {
             // 從資料庫撈資料
-            List<LotNumber> DBdata = _lotteryService.GetNumberServices();
+            List<LotNumber> DBdata = _lotteryService.GetNumberServices_539();
 
             //
             if (!string.IsNullOrEmpty(data.Submit))
@@ -81,6 +80,37 @@ namespace Lot.Controllers
             }
             return View(data);
         }
+        #endregion
+
+        #region 最合數字
+        [HttpGet]
+        public ActionResult QuerySelectNumberCount()
+        {
+            SelectLotNumber model = new SelectLotNumber();
+            model.selectNumberCountDarry = new int[40];
+            model.selectNumberCountListOrderBy = new Dictionary<int?, int?>();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult QuerySelectNumberCount(string selectnum, string StartDate, string EndDate, bool nowYear)
+        {
+
+            SelectLotNumber model = new SelectLotNumber();
+            List<LotNumber> numList = new List<LotNumber>();
+            if (string.IsNullOrEmpty(StartDate) && string.IsNullOrEmpty(EndDate) && nowYear)
+            {
+                StartDate = DateTime.Now.Year.ToString() + "0101";
+                EndDate = DateTime.Now.Year.ToString() + "1231";
+            }
+            model.nowYear = nowYear;
+            numList = _lotteryService.GetNumberListServices_539(selectnum, StartDate, EndDate);
+            SumNumberCount(model, numList);
+            ViewBag.Message = "查詢期間為：" + numList.Select(d => d.開獎日期).Min() + "~" + numList.Select(d => d.開獎日期).Max();
+            ViewBag.Data = numList.Count;
+
+            return View(model);
+        }
+
         #endregion
 
         #region 熱門牌

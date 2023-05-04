@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Study.DataAccess;
-using Study.Models.Models;
+using Lot.DataAccess;
+using Lot.Models.Models;
 using System.Transactions;
 using System.Globalization;
 

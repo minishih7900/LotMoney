@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Study.Models.Models;
+using System.Reflection;
+using Lot.Models.Models;
 
 
-namespace Study.DataAccess
+namespace Lot.DataAccess
 {
     public class SqlRepository : BaseRepository
     {
@@ -20,7 +18,7 @@ namespace Study.DataAccess
            @password)";
             return _dbDapper.NonQuerySQL(sql, mm) > 0;
         }
-        public List<LotNumber> GetSelectLotNumber(string selectnum, string StartDate, string EndDate, string StartPeriod, string EndPeriod)
+        public List<LotNumber> GetSelectLotNumber(string selectnum, string StartDate, string EndDate)
         {
             var sqlTemp = "";
             var sql = @"
@@ -31,18 +29,14 @@ where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=
             {
                 sqlTemp = sqlTemp + "and (開獎日期 between @startdate and @enddate) ";
             }
-            if (StartPeriod != "00000000" && EndPeriod != "00000000")
-            {
-                sqlTemp = sqlTemp + "and 期數 between @startperiod and @endperiod ";
-            }
+            
             sql = string.Format(sql, sqlTemp);
 
             var param = new Dictionary<string, object>();
             param.Add("num", selectnum);
             param.Add("startdate", StartDate);
             param.Add("enddate", EndDate);
-            param.Add("startperiod", StartPeriod);
-            param.Add("endperiod", EndPeriod);
+           
 
             return _dbDapper.QueryList<LotNumber>(sql, param);
         }
@@ -218,6 +212,54 @@ order by 期數 desc";
 
             return _dbDapper.QueryList<LotNumber>(sql, null);
         }
+        public dynamic GetHot30_EveryDay(string date)
+        {
+            var sql = "";
+           
+                sql = @"
+SELECT  DrawDate, StatisticalDate_ST, StatisticalDate_ED, 
+[01] as num1, [02] as num2, [03] as num3, [04] as num4, [05] as num5, [06] as num6, [07] as num7, [08] as num8, [09] as num9,
+[10] as num10, [11] as num11, [12] as num12, [13] as num13, [14] as num14, [15] as num15, [16] as num16, [17] as num17, [18] as num18, [19] as num19, 
+[20] as num20, [21] as num21, [22] as num22, [23] as num23, [24] as num24, [25] as num25, [26] as num26, [27] as num27, [28] as num28, [29] as num29,
+[30] as num30, [31] as num31, [32] as num32, [33] as num33, [34] as num34, [35] as num35, [36] as num36, [37] as num37, [38] as num38, [39] as num39
+FROM              EnLotEveryDay_Hot30
+WHERE DrawDate=@date ";
+
+            var param = new Dictionary<string, object>();
+            param.Add("date", date);
+
+            return _dbDapper.QueryList<dynamic>(sql, param).FirstOrDefault();
+        }
+        public List<LotNumber> GetLotNumber_EveryDay()
+        {
+            var sql = @"
+SELECT           *
+FROM              EnLotEveryDay
+";
+            return _dbDapper.QueryList<LotNumber>(sql, null);
+        }
+        public List<LotNumber> GetSelectLotNumber_EveryDay(string selectnum, string StartDate, string EndDate)
+        {
+            var sqlTemp = "";
+            var sql = @"
+select * from [dbo].[EnLotEveryDay]
+where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=@num) {0}
+";
+            if (!string.IsNullOrEmpty(StartDate) && !string.IsNullOrEmpty(EndDate))
+            {
+                sqlTemp = sqlTemp + "and (開獎日期 between @startdate and @enddate) ";
+            }
+
+            sql = string.Format(sql, sqlTemp);
+
+            var param = new Dictionary<string, object>();
+            param.Add("num", selectnum);
+            param.Add("startdate", StartDate);
+            param.Add("enddate", EndDate);
+
+
+            return _dbDapper.QueryList<LotNumber>(sql, param);
+        }
 
         public bool InputLotNumber_EveryDay(LotNumber data)
         {
@@ -323,6 +365,110 @@ EXEC SP_EXECUTESQL @TSQL";
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
+
+        public bool InsertHot30_EveryDay(SelectHot30 data)
+        {
+            var sql = @"
+            
+    INSERT INTO [dbo].[EnLotEveryDay_Hot30]
+           ([DrawDate]
+           ,[StatisticalDate_ST]
+           ,[StatisticalDate_ED]
+           ,[01]
+           ,[02]
+           ,[03]
+           ,[04]
+           ,[05]
+           ,[06]
+           ,[07]
+           ,[08]
+           ,[09]
+           ,[10]
+           ,[11]
+           ,[12]
+           ,[13]
+           ,[14]
+           ,[15]
+           ,[16]
+           ,[17]
+           ,[18]
+           ,[19]
+           ,[20]
+           ,[21]
+           ,[22]
+           ,[23]
+           ,[24]
+           ,[25]
+           ,[26]
+           ,[27]
+           ,[28]
+           ,[29]
+           ,[30]
+           ,[31]
+           ,[32]
+           ,[33]
+           ,[34]
+           ,[35]
+           ,[36]
+           ,[37]
+           ,[38]
+           ,[39])
+     VALUES
+           (@DrawDate
+           ,@StatisticalDate_ST
+           ,@StatisticalDate_ED
+           ,@01
+           ,@02
+           ,@03
+           ,@04
+           ,@05
+           ,@06
+           ,@07
+           ,@08
+           ,@09
+           ,@10
+           ,@11
+           ,@12
+           ,@13
+           ,@14
+           ,@15
+           ,@16
+           ,@17
+           ,@18
+           ,@19
+           ,@20
+           ,@21
+           ,@22
+           ,@23
+           ,@24
+           ,@25
+           ,@26
+           ,@27
+           ,@28
+           ,@29
+           ,@30
+           ,@31
+           ,@32
+           ,@33
+           ,@34
+           ,@35
+           ,@36
+           ,@37
+           ,@38
+           ,@39)
+";
+            var param = new Dictionary<string, object>();
+            param.Add("DrawDate", data.DrawDate);
+            param.Add("StatisticalDate_ST", data.StatisticalDate_ST);
+            param.Add("StatisticalDate_ED", data.StatisticalDate_ED);
+            for (int i = 1; i < 40; i++)
+            {
+                param.Add(i.ToString().PadLeft(2,'0'), data.selectNumberCountList[i]);
+            }
+
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
+        }
+
         #endregion
 
         #region HkLot49

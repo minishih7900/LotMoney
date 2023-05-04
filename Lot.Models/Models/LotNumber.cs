@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Study.Models.Models
+namespace Lot.Models.Models
 {
     public class LotNumber
     {
@@ -28,7 +28,16 @@ namespace Study.Models.Models
     {
         public int[] selectNumberCountDarry { get; set; }
         public Dictionary<int?, int?> selectNumberCountList { get; set; }
-        public Dictionary<int?,int?> selectNumberCountListOrderBy { get; set; }
+        public Dictionary<int?, int?> selectNumberCountListOrderBy { get; set; }
+        public Dictionary<int?, int?> Hot30CountList { get; set; }
         public bool nowYear { get; set; }
     }
+    public class SelectHot30
+    {
+        public string DrawDate { get; set; }
+        public string StatisticalDate_ST { get; set; }
+        public string StatisticalDate_ED { get; set; }
+        public Dictionary<int?, int?> selectNumberCountList { get; set; }
+    }
+
 }

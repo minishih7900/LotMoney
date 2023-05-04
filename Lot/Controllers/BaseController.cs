@@ -1,4 +1,4 @@
-﻿using Study.Models.Models;
+﻿using Lot.Models.Models;
 using Study.Services;
 using System;
 using System.Collections.Generic;
@@ -43,6 +43,7 @@ namespace Lot.Controllers
             model.selectNumberCountListOrderBy = numDic.OrderByDescending(d => d.Value).ToDictionary(dkey => dkey.Key, dvalue => dvalue.Value);
             return model;
         }
+        
 
         /// <summary>
         /// 取得最大期數

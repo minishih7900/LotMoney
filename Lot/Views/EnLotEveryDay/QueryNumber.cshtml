@@ -3,7 +3,7 @@
 @using PagedList.Mvc
 
 @{
-    ViewBag.Title = "今彩539-查詢號碼";
+    ViewBag.Title = "加州天天樂-查詢號碼";
 }
 
 @section css{
@@ -52,11 +52,11 @@
 }
 
 <div class="row">
-    @Html.Partial("_TwLot539MenuPartial", "查詢號碼")
+    @Html.Partial("_EnLotEveryDayMenuPartial", "查詢號碼")
 </div>
 <hr />
 <div class="row">
-    @using (Html.BeginForm("QueryNumber", "TwLot539", FormMethod.Post, new { id = "QueryNumberList" }))
+    @using (Html.BeginForm("QueryNumber", "EnLotEveryDay", FormMethod.Post, new { id = "QueryNumberList" }))
     {
         <div>
             @if (Model.LotNumber != null && Model.LotNumber.Count() > 0)

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 
-namespace  Study.DataAccess
+namespace  Lot.DataAccess
 {
     public abstract class BaseRepository
     {

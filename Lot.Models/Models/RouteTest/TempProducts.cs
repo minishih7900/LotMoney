@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Study.Models.RouteTest
+namespace Lot.Models.RouteTest
 {
     public class TempProducts
     {
