@@ -22,27 +22,27 @@ namespace Lot.Controllers
         public ActionResult QueryNumber(int page = 1)
         {
             // 進入搜尋頁面 不主動撈取資料
-            LotteryViewModel viewModel = new LotteryViewModel();
+            Lottery5ViewModel viewModel = new Lottery5ViewModel();
             // 從資料庫撈資料
-            List<LotNumber> DBdata = _lotteryService.GetNumberServices_EveryDay();
-            viewModel.LotNumber = DBdata.OrderByDescending(x => x.開獎日期).ToPagedList(page, PageSize);
+            List<LotNumber5> DBdata = _lotteryService.GetNumberServices_EveryDay();
+            viewModel.LotNumber = DBdata.OrderByDescending(x => x.DrawDate).ToPagedList(page, PageSize);
             return View(viewModel);
         }
         [HttpPost]
-        public ActionResult QueryNumber(LotteryViewModel data)
+        public ActionResult QueryNumber(Lottery5ViewModel data)
         {
             // 從資料庫撈資料
-            List<LotNumber> DBdata = _lotteryService.GetNumberServices_EveryDay();
+            List<LotNumber5> DBdata = _lotteryService.GetNumberServices_EveryDay();
             data.Page = data.Page == 0 ? 2 : data.Page + 1;
 
             // 當日期符合開始與結束日期
             if (!string.IsNullOrWhiteSpace(data.StartDate) && !string.IsNullOrWhiteSpace(data.EndDate))
             {
-                data.LotNumber = DBdata.Where(p => p.開獎日期.CompareTo(data.StartDate) >= 0 && p.開獎日期.CompareTo(data.EndDate) <= 0).OrderByDescending(m => m.開獎日期).ToPagedList(data.Page > 0 ? data.Page - 1 : 0, PageSize);
+                data.LotNumber = DBdata.Where(p => p.DrawDate.CompareTo(data.StartDate) >= 0 && p.DrawDate.CompareTo(data.EndDate) <= 0).OrderByDescending(m => m.DrawDate).ToPagedList(data.Page > 0 ? data.Page - 1 : 0, PageSize);
             }
             else
             {
-                data.LotNumber = DBdata.OrderByDescending(x => x.開獎日期).ToPagedList(data.Page > 0 ? data.Page - 1 : 0, PageSize);
+                data.LotNumber = DBdata.OrderByDescending(x => x.DrawDate).ToPagedList(data.Page > 0 ? data.Page - 1 : 0, PageSize);
             }
             return View(data);
         }
@@ -62,7 +62,7 @@ namespace Lot.Controllers
         {
 
             SelectLotNumber model = new SelectLotNumber();
-            List<LotNumber> numList = new List<LotNumber>();
+            List<LotNumber5> numList = new List<LotNumber5>();
             if (string.IsNullOrEmpty(StartDate) && string.IsNullOrEmpty(EndDate) && nowYear)
             {
                 StartDate = DateTime.Now.Year.ToString() + "0101";
@@ -71,7 +71,7 @@ namespace Lot.Controllers
             model.nowYear = nowYear;
             numList = _lotteryService.GetNumberListServices_EveryDay(selectnum, StartDate, EndDate);
             SumNumberCount(model, numList);
-            ViewBag.Message = "查詢期間為：" + numList.Select(d => d.開獎日期).Min() + "~" + numList.Select(d => d.開獎日期).Max();
+            ViewBag.Message = "查詢期間為：" + numList.Select(d => d.DrawDate).Min() + "~" + numList.Select(d => d.DrawDate).Max();
             ViewBag.Data = numList.Count;
 
             return View(model);
@@ -89,21 +89,21 @@ namespace Lot.Controllers
         public ActionResult HotNumber(string PeriodNum)
         {
             SelectLotNumber model = new SelectLotNumber();
-            List<LotNumber> numList = new List<LotNumber>();
+            List<LotNumber5> numList = new List<LotNumber5>();
             numList = _lotteryService.GetNumberTopServices_EveryDay(PeriodNum);
             SumNumberCount(model, numList);
-            ViewBag.Message = "查詢期間為：" + numList.Select(d => d.開獎日期).Min() + "~" + numList.Select(d => d.開獎日期).Max();
+            ViewBag.Message = "查詢期間為：" + numList.Select(d => d.DrawDate).Min() + "~" + numList.Select(d => d.DrawDate).Max();
             ViewBag.Data = numList.Count;
 
             if (PeriodNum =="30")
             {
-                dynamic data = _lotteryService.GetHot30_EveryDay(numList.Select(d => d.開獎日期).Max());
+                dynamic data = _lotteryService.GetHot30_EveryDay(numList.Select(d => d.DrawDate).Max());
                 model.Hot30CountList = new Dictionary<int?, int?>();
                 foreach (KeyValuePair<string, dynamic> pair in data)
                 {
-                    if (pair.Key.Contains("num"))
+                    if (pair.Key.Contains("Num"))
                     {
-                        string key = pair.Key.Replace("num","");
+                        string key = pair.Key.Replace("Num","");
                         model.Hot30CountList.Add(int.Parse(key), int.Parse(pair.Value));
                        
                     }
@@ -123,30 +123,30 @@ namespace Lot.Controllers
         public ActionResult AddNumber()
         {
             SetMaxNo("EnLotEveryDay");
-            LotNumber model = new LotNumber();
-            model.開獎日期 = DateTime.Now.ToString("yyyyMMdd");
+            LotNumber5 model = new LotNumber5();
+            model.DrawDate = DateTime.Now.ToString("yyyyMMdd");
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult AddNumber(LotNumber data)
+        public ActionResult AddNumber(LotNumber5 data)
         {
             SetMaxNo("EnLotEveryDay");
             if (ModelState.IsValid)
             {
                 AddStartZone(data);
-                data.期數 = data.開獎日期;
-                data.星期 = YYYYMMDDtoDayOfWeek(data.開獎日期);
+                data.Period = data.DrawDate;
+                data.Week = YYYYMMDDtoDayOfWeek(data.DrawDate);
 
                 //追加儲存30期熱門資料
                 SelectLotNumber model = new SelectLotNumber();
-                List<LotNumber> numList = new List<LotNumber>();
+                List<LotNumber5> numList = new List<LotNumber5>();
                 numList = _lotteryService.GetNumberTopServices_EveryDay("30");
                 SumNumberCount(model, numList);
                 SelectHot30 hot30 = new SelectHot30();
-                hot30.DrawDate = data.開獎日期;
-                hot30.StatisticalDate_ST = numList.Select(d => d.開獎日期).Min();
-                hot30.StatisticalDate_ED = numList.Select(d => d.開獎日期).Max();
+                hot30.DrawDate = data.DrawDate;
+                hot30.StatisticalDate_ST = numList.Select(d => d.DrawDate).Min();
+                hot30.StatisticalDate_ED = numList.Select(d => d.DrawDate).Max();
                 hot30.selectNumberCountList = model.selectNumberCountListOrderBy;
 
                 if (_lotteryService.AddNumberServices_EveryDay(data, hot30))

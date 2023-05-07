@@ -23,17 +23,17 @@ namespace Lot.Controllers
         /// <param name="model"></param>
         /// <param name="numList"></param>
         /// <returns></returns>
-        protected SelectLotNumber SumNumberCount(SelectLotNumber model, List<LotNumber> numList)
+        protected SelectLotNumber SumNumberCount(SelectLotNumber model, List<LotNumber5> numList)
         {
             Dictionary<int?, int?> numDic = new Dictionary<int?, int?>();
             model.selectNumberCountDarry = new int[40];
             foreach (var item in numList)
             {
-                model.selectNumberCountDarry[int.Parse(item.號碼1)] = model.selectNumberCountDarry[int.Parse(item.號碼1)] + 1;
-                model.selectNumberCountDarry[int.Parse(item.號碼2)] = model.selectNumberCountDarry[int.Parse(item.號碼2)] + 1;
-                model.selectNumberCountDarry[int.Parse(item.號碼3)] = model.selectNumberCountDarry[int.Parse(item.號碼3)] + 1;
-                model.selectNumberCountDarry[int.Parse(item.號碼4)] = model.selectNumberCountDarry[int.Parse(item.號碼4)] + 1;
-                model.selectNumberCountDarry[int.Parse(item.號碼5)] = model.selectNumberCountDarry[int.Parse(item.號碼5)] + 1;
+                model.selectNumberCountDarry[int.Parse(item.Num1)] = model.selectNumberCountDarry[int.Parse(item.Num1)] + 1;
+                model.selectNumberCountDarry[int.Parse(item.Num2)] = model.selectNumberCountDarry[int.Parse(item.Num2)] + 1;
+                model.selectNumberCountDarry[int.Parse(item.Num3)] = model.selectNumberCountDarry[int.Parse(item.Num3)] + 1;
+                model.selectNumberCountDarry[int.Parse(item.Num4)] = model.selectNumberCountDarry[int.Parse(item.Num4)] + 1;
+                model.selectNumberCountDarry[int.Parse(item.Num5)] = model.selectNumberCountDarry[int.Parse(item.Num5)] + 1;
             }
             for (int i = 1; i < 40; i++)
             {
@@ -43,7 +43,6 @@ namespace Lot.Controllers
             model.selectNumberCountListOrderBy = numDic.OrderByDescending(d => d.Value).ToDictionary(dkey => dkey.Key, dvalue => dvalue.Value);
             return model;
         }
-        
 
         /// <summary>
         /// 取得最大期數
@@ -90,27 +89,18 @@ namespace Lot.Controllers
         /// 去掉前面0
         /// </summary>
         /// <param name="data"></param>
-        protected void TrimStartZone(LotNumber data)
-        {
-            data.號碼1 = data.號碼1.TrimStart('0');
-            data.號碼2 = data.號碼2.TrimStart('0');
-            data.號碼3 = data.號碼3.TrimStart('0');
-            data.號碼4 = data.號碼4.TrimStart('0');
-            data.號碼5 = data.號碼5.TrimStart('0');
-        }
         protected string TrimStartZone(string data)
         {
             data = data.TrimStart('0');
             return data;
         }
-
-        protected void AddStartZone(LotNumber data)
+        protected void AddStartZone(LotNumber5 data)
         {
-            data.號碼1 = data.號碼1.PadLeft(2, '0');
-            data.號碼2 = data.號碼2.PadLeft(2, '0');
-            data.號碼3 = data.號碼3.PadLeft(2, '0');
-            data.號碼4 = data.號碼4.PadLeft(2, '0');
-            data.號碼5 = data.號碼5.PadLeft(2, '0');
+            data.Num1 = data.Num1.PadLeft(2, '0');
+            data.Num2 = data.Num2.PadLeft(2, '0');
+            data.Num3 = data.Num3.PadLeft(2, '0');
+            data.Num4 = data.Num4.PadLeft(2, '0');
+            data.Num5 = data.Num5.PadLeft(2, '0');
         }
         /// <summary>
         /// yyyymmdd轉換星期，且刪除「週」

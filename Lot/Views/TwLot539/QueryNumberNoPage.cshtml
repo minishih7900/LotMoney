@@ -1,4 +1,4 @@
-﻿@model  Lot.Models.Models.LotteryViewModel
+﻿@model  Lot.Models.Models.Lottery5ViewModel
 @{
     ViewBag.Title = "今彩539-查詢號碼不分頁";
 }
@@ -57,8 +57,8 @@
     @using (Html.BeginForm("QueryNumberNoPage", "TwLot539", FormMethod.Post, new { id = "QueryNumberList" }))
     {
         <div class="mb-2">
-            <button data-bs-toggle="collapse" href="#demo" class="btn btn-primary" aria-expanded="false" aria-controls="collapseExample">查詢條件</button>
-            <button id="clear" class="btn btn-primary">清除</button>
+            <a data-bs-toggle="collapse" href="#demo" class="btn btn-primary" aria-expanded="false" >查詢條件</a>
+            <a id="clear" class="btn btn-primary">清除</a>
             <input type="submit" name="submit" value=@DateTime.Now.ToString("yyyy") class="btn btn-warning" />
             <button id="btnTop" class="btn-top" title="回到最頂端"><i class="fa fa-chevron-up"></i></button>
         </div>
@@ -102,25 +102,25 @@
                 <table class="table table-hover" id="tableT2">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().開獎日期)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().DrawDate)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().星期)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Week)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼1)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Num1)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼2)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Num2)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼3)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Num3)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼4)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Num4)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().號碼5)
+                            @Html.DisplayNameFor(model => model.LotNumberNoPage.First().Num5)
                         </th>
                     </tr>
 
@@ -128,25 +128,25 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.開獎日期)
+                                @Html.DisplayFor(modelItem => item.DrawDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.星期)
+                                @Html.DisplayFor(modelItem => item.Week)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼1)
+                                @Html.DisplayFor(modelItem => item.Num1)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼2)
+                                @Html.DisplayFor(modelItem => item.Num2)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼3)
+                                @Html.DisplayFor(modelItem => item.Num3)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼4)
+                                @Html.DisplayFor(modelItem => item.Num4)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼5)
+                                @Html.DisplayFor(modelItem => item.Num5)
                             </td>
                         </tr>
                     }

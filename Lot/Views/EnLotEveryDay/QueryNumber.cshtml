@@ -1,4 +1,4 @@
-﻿@model  Lot.Models.Models.LotteryViewModel
+﻿@model  Lot.Models.Models.Lottery5ViewModel
 @using PagedList
 @using PagedList.Mvc
 
@@ -65,25 +65,25 @@
                 <table class="table table-hover">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().開獎日期)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().DrawDate)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().星期)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Week)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().號碼1)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Num1)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().號碼2)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Num2)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().號碼3)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Num3)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().號碼4)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Num4)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LotNumber.First().號碼5)
+                            @Html.DisplayNameFor(model => model.LotNumber.First().Num5)
                         </th>
                     </tr>
 
@@ -91,25 +91,25 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.開獎日期)
+                                @Html.DisplayFor(modelItem => item.DrawDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.星期)
+                                @Html.DisplayFor(modelItem => item.Week)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼1)
+                                @Html.DisplayFor(modelItem => item.Num1)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼2)
+                                @Html.DisplayFor(modelItem => item.Num2)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼3)
+                                @Html.DisplayFor(modelItem => item.Num3)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼4)
+                                @Html.DisplayFor(modelItem => item.Num4)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.號碼5)
+                                @Html.DisplayFor(modelItem => item.Num5)
                             </td>
                         </tr>
                     }

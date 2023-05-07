@@ -30,4 +30,26 @@ namespace Lot.Models.Models
             Page = 0;
         }
     }
+    public class Lottery5ViewModel
+    {
+        // Properties
+        public string StartDate { get; set; }  // 搜尋條件1
+
+        public string EndDate { get; set; }  // 搜尋條件2
+
+        public IPagedList<LotNumber5> LotNumber { get; set; }  // 符合條件資料
+        public int Page { get; set; }  // 頁碼
+
+        public List<LotNumber5> LotNumberNoPage { get; set; }  // 符合條件資料不用分頁
+        public string Submit { get; set; }  // 確定按鈕
+
+        // Constructors
+        public Lottery5ViewModel()
+        {
+            StartDate = string.Empty;
+            EndDate = string.Empty;
+            Page = 0;
+        }
+    }
+
 }

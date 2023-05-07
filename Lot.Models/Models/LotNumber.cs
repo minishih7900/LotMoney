@@ -24,6 +24,31 @@ namespace Lot.Models.Models
         [Required]
         public string 號碼5 { get; set; }
     }
+    public class LotNumber5
+    {
+        [Display(Name = "期數")]
+        public string Period { get; set; }
+        [Required]
+        [Display(Name = "開獎日期")]
+        public string DrawDate { get; set; }
+        [Display(Name = "星期")]
+        public string Week { get; set; }
+        [Display(Name = "號碼1")]
+        [Required]
+        public string Num1 { get; set; }
+        [Display(Name = "號碼2")]
+        [Required]
+        public string Num2 { get; set; }
+        [Display(Name = "號碼3")]
+        [Required]
+        public string Num3 { get; set; }
+        [Display(Name = "號碼4")]
+        [Required]
+        public string Num4 { get; set; }
+        [Display(Name = "號碼5")]
+        [Required]
+        public string Num5 { get; set; }
+    }
     public class SelectLotNumber
     {
         public int[] selectNumberCountDarry { get; set; }

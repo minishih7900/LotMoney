@@ -18,7 +18,7 @@ namespace Lot.Models.Models
         public IPagedList<LotNumber6> LotNumber6 { get; set; }  // 符合條件資料
         public int Page { get; set; }  // 頁碼
 
-        public List<LotNumber> LotNumberNoPage { get; set; }  // 符合條件資料不用分頁
+        public List<LotNumber6> LotNumberNoPage { get; set; }  // 符合條件資料不用分頁
 
         // Constructors
         public HkLot49ViewModel()

@@ -18,16 +18,16 @@ namespace Lot.DataAccess
            @password)";
             return _dbDapper.NonQuerySQL(sql, mm) > 0;
         }
-        public List<LotNumber> GetSelectLotNumber(string selectnum, string StartDate, string EndDate)
+        public List<LotNumber5> GetSelectLotNumber(string selectnum, string StartDate, string EndDate)
         {
             var sqlTemp = "";
             var sql = @"
 select * from [dbo].[TwLot539]
-where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=@num) {0}
+where (Num1=@num or Num2=@num or  Num3=@num or Num4=@num or Num5=@num) {0}
 ";
             if (!string.IsNullOrEmpty(StartDate) && !string.IsNullOrEmpty(EndDate))
             {
-                sqlTemp = sqlTemp + "and (開獎日期 between @startdate and @enddate) ";
+                sqlTemp = sqlTemp + "and (DrawDate between @startdate and @enddate) ";
             }
             
             sql = string.Format(sql, sqlTemp);
@@ -38,26 +38,17 @@ where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=
             param.Add("enddate", EndDate);
            
 
-            return _dbDapper.QueryList<LotNumber>(sql, param);
+            return _dbDapper.QueryList<LotNumber5>(sql, param);
         }
-        public List<LotNumber> GetLotNumber()
+        public List<LotNumber5> GetLotNumber()
         {
             var sql = @"
 SELECT           *
 FROM              TwLot539
 ";
-            return _dbDapper.QueryList<LotNumber>(sql, null);
+            return _dbDapper.QueryList<LotNumber5>(sql, null);
         }
-        public List<LotNumber> GetLotNumber(string startDate, string endDate)
-        {
-            var sql = @"
-SELECT           *
-FROM              TwLot539
-WHERE          (開獎日期 BETWEEN @StartDate AND @EndDate)
-";
-            return _dbDapper.QueryList<LotNumber>(sql, new { StartDate = startDate, EndDate = endDate });
-        }
-        public List<LotNumber> GetLotNumberNewTop(string newCount)
+        public List<LotNumber5> GetLotNumberNewTop(string newCount)
         {
             var sql = "";
             if (newCount == "All")
@@ -65,47 +56,48 @@ WHERE          (開獎日期 BETWEEN @StartDate AND @EndDate)
                 sql = @"
 SELECT   *
 FROM              TwLot539
-order by 期數 desc";
+order by Period desc";
             }
             else
             {
                 sql = @"
 SELECT   Top " + newCount + @"*
 FROM              TwLot539
-order by 期數 desc";
+order by Period desc";
             }
 
 
-            return _dbDapper.QueryList<LotNumber>(sql, null);
+            return _dbDapper.QueryList<LotNumber5>(sql, null);
         }
-        public bool InputLotNumber(LotNumber data)
+        public bool InputLotNumber(LotNumber5 data)
         {
             var sql = @"
 INSERT INTO [dbo].[TwLot539]
-           ([期數]
-           ,[開獎日期]
-           ,[星期]
-           ,[號碼1]
-           ,[號碼2]
-           ,[號碼3]
-           ,[號碼4]
-           ,[號碼5])
+           ([Period]
+           ,[DrawDate]
+           ,[Week]
+           ,[Num1]
+           ,[Num2]
+           ,[Num3]
+           ,[Num4]
+           ,[Num5])
      VALUES
-           (@期數
-           ,@開獎日期
-           ,@星期
-           ,@號碼1
-           ,@號碼2
-           ,@號碼3
-           ,@號碼4
-           ,@號碼5)
+           (@Period
+           ,@DrawDate
+           ,@Week
+           ,@Num1
+           ,@Num2
+           ,@Num3
+           ,@Num4
+           ,@Num5)
 ";
             return _dbDapper.NonQuerySQL(sql, data) > 0;
         }
 
         public string GetMaxNo(string dbName)
         {
-            var sql = $"select max(期數) from [dbo].[{dbName}]";
+            var sql =  $"select max(Period) from [dbo].[{dbName}]";
+            
             return _dbDapper.ExecuteScalarSQL<string>(sql, null);
         }
         public bool InsertCopyNumber(string data)
@@ -114,9 +106,10 @@ INSERT INTO [dbo].[TwLot539]
             IF(NOT EXISTS(SELECT top 1 * FROM [dbo].[TwLot539_StoredCount] ))
 BEGIN
 	 insert into [dbo].[TwLot539_StoredCount]
-	(日期,[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13]
-      ,[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26]
-      ,[27],[28],[29],[30],[31],[32],[33],[34],[35],[36],[37],[38],[39])
+	(DrawDate,Num01,Num02,Num03,Num04,Num05,Num06,Num07,Num08,Num09,Num10
+      ,Num11,Num12,Num13,Num14,Num15,Num16,Num17,Num18,Num19,Num20
+      ,Num21,Num22,Num23,Num24,Num25,Num26,Num27,Num28,Num29,Num30
+      ,Num31,Num32,Num33,Num34,Num35,Num36,Num37,Num38,Num39)
 	  VALUES
 	  ( @data,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 END	
@@ -124,46 +117,46 @@ END
 BEGIN
     insert into [dbo].[TwLot539_StoredCount]
 SELECT TOP (1) @data
-      ,[01]+1 as [01]
-      ,[02]+1 as [02]
-      ,[03]+1 as [03]
-      ,[04]+1 as [04]
-      ,[05]+1 as [05]
-      ,[06]+1 as [06]
-      ,[07]+1 as [07]
-      ,[08]+1 as [08]
-      ,[09]+1 as [09]
-      ,[10]+1 as [10]
-      ,[11]+1 as [11]
-      ,[12]+1 as [12]
-      ,[13]+1 as [13]
-      ,[14]+1 as [14]
-      ,[15]+1 as [15]
-      ,[16]+1 as [16]
-      ,[17]+1 as [17]
-      ,[18]+1 as [18]
-      ,[19]+1 as [19]
-      ,[20]+1 as [20]
-      ,[21]+1 as [21]
-      ,[22]+1 as [22]
-      ,[23]+1 as [23]
-      ,[24]+1 as [24]
-      ,[25]+1 as [25]
-      ,[26]+1 as [26]
-      ,[27]+1 as [27]
-      ,[28]+1 as [28]
-      ,[29]+1 as [29]
-      ,[30]+1 as [30]
-      ,[31]+1 as [31]
-      ,[32]+1 as [32]
-      ,[33]+1 as [33]
-      ,[34]+1 as [34]
-      ,[35]+1 as [35]
-      ,[36]+1 as [36]
-      ,[37]+1 as [37]
-      ,[38]+1 as [38]
-      ,[39]+1 as [39]
-       FROM [dbo].[TwLot539_StoredCount] order by 日期 desc
+      ,[Num01]+1 
+      ,[Num02]+1
+      ,[Num03]+1
+      ,[Num04]+1 
+      ,[Num05]+1
+      ,[Num06]+1
+      ,[Num07]+1 
+      ,[Num08]+1 
+      ,[Num09]+1 
+      ,[Num10]+1 
+      ,[Num11]+1 
+      ,[Num12]+1 
+      ,[Num13]+1 
+      ,[Num14]+1 
+      ,[Num15]+1 
+      ,[Num16]+1 
+      ,[Num17]+1 
+      ,[Num18]+1
+      ,[Num19]+1 
+      ,[Num20]+1 
+      ,[Num21]+1 
+      ,[Num22]+1 
+      ,[Num23]+1 
+      ,[Num24]+1 
+      ,[Num25]+1 
+      ,[Num26]+1
+      ,[Num27]+1 
+      ,[Num28]+1 
+      ,[Num29]+1 
+      ,[Num30]+1 
+      ,[Num31]+1 
+      ,[Num32]+1 
+      ,[Num33]+1 
+      ,[Num34]+1 
+      ,[Num35]+1 
+      ,[Num36]+1
+      ,[Num37]+1 
+      ,[Num38]+1 
+      ,[Num39]+1 
+       FROM [dbo].[TwLot539_StoredCount] order by DrawDate desc
 END";
             var param = new Dictionary<string, object>();
             param.Add("data", data);
@@ -171,27 +164,27 @@ END";
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
 
-        public bool UpdateCopyNumber(LotNumber data)
+        public bool UpdateCopyNumber(LotNumber5 data)
         {
             var sql = @"
             DECLARE @TSQL NVARCHAR(4000)
 SET @TSQL =	'update [dbo].[TwLot539_StoredCount]
 set ' + @num1 + '=0,' + @num2 + '=0,' + @num3 +'=0,' + @num4 + '=0,' + @num5 + '=0
-where 日期=' + @date
+where DrawDate =' + @date
 EXEC SP_EXECUTESQL @TSQL";
             var param = new Dictionary<string, object>();
-            param.Add("num1", "[" + data.號碼1 + "]");
-            param.Add("num2", "[" + data.號碼2 + "]");
-            param.Add("num3", "[" + data.號碼3 + "]");
-            param.Add("num4", "[" + data.號碼4 + "]");
-            param.Add("num5", "[" + data.號碼5 + "]");
-            param.Add("date", data.開獎日期);
+            param.Add("num1", "[Num" + data.Num1 + "]");
+            param.Add("num2", "[Num" + data.Num2 + "]");
+            param.Add("num3", "[Num" + data.Num3 + "]");
+            param.Add("num4", "[Num" + data.Num4 + "]");
+            param.Add("num5", "[Num" + data.Num5 + "]");
+            param.Add("date", data.DrawDate);
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
 
         #region EnLotEveryDay
-        public List<LotNumber> GetLotNumberNewTop_EveryDay(string newCount)
+        public List<LotNumber5> GetLotNumberNewTop_EveryDay(string newCount)
         {
             var sql = "";
             if (newCount == "All")
@@ -199,18 +192,18 @@ EXEC SP_EXECUTESQL @TSQL";
                 sql = @"
 SELECT   *
 FROM              EnLotEveryDay
-order by 期數 desc";
+order by Period desc";
             }
             else
             {
                 sql = @"
 SELECT   Top " + newCount + @"*
 FROM              EnLotEveryDay
-order by 期數 desc";
+order by Period desc";
             }
 
 
-            return _dbDapper.QueryList<LotNumber>(sql, null);
+            return _dbDapper.QueryList<LotNumber5>(sql, null);
         }
         public dynamic GetHot30_EveryDay(string date)
         {
@@ -218,10 +211,10 @@ order by 期數 desc";
            
                 sql = @"
 SELECT  DrawDate, StatisticalDate_ST, StatisticalDate_ED, 
-[01] as num1, [02] as num2, [03] as num3, [04] as num4, [05] as num5, [06] as num6, [07] as num7, [08] as num8, [09] as num9,
-[10] as num10, [11] as num11, [12] as num12, [13] as num13, [14] as num14, [15] as num15, [16] as num16, [17] as num17, [18] as num18, [19] as num19, 
-[20] as num20, [21] as num21, [22] as num22, [23] as num23, [24] as num24, [25] as num25, [26] as num26, [27] as num27, [28] as num28, [29] as num29,
-[30] as num30, [31] as num31, [32] as num32, [33] as num33, [34] as num34, [35] as num35, [36] as num36, [37] as num37, [38] as num38, [39] as num39
+Num01,  Num02, Num03, Num04, Num05, Num06, Num07, Num08, Num09,
+Num10, Num11, Num12, Num13, Num14, Num15, Num16, Num17, Num18, Num19, 
+Num20, Num21, Num22, Num23, Num24, Num25, Num26, Num27, Num28, Num29,
+Num30, Num31, Num32, Num33, Num34, Num35, Num36, Num37, Num38, Num39
 FROM              EnLotEveryDay_Hot30
 WHERE DrawDate=@date ";
 
@@ -230,24 +223,24 @@ WHERE DrawDate=@date ";
 
             return _dbDapper.QueryList<dynamic>(sql, param).FirstOrDefault();
         }
-        public List<LotNumber> GetLotNumber_EveryDay()
+        public List<LotNumber5> GetLotNumber_EveryDay()
         {
             var sql = @"
 SELECT           *
 FROM              EnLotEveryDay
 ";
-            return _dbDapper.QueryList<LotNumber>(sql, null);
+            return _dbDapper.QueryList<LotNumber5>(sql, null);
         }
-        public List<LotNumber> GetSelectLotNumber_EveryDay(string selectnum, string StartDate, string EndDate)
+        public List<LotNumber5> GetSelectLotNumber_EveryDay(string selectnum, string StartDate, string EndDate)
         {
             var sqlTemp = "";
             var sql = @"
 select * from [dbo].[EnLotEveryDay]
-where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=@num) {0}
+where (Num1=@num or Num2=@num or  Num3=@num or Num4=@num or Num5=@num) {0}
 ";
             if (!string.IsNullOrEmpty(StartDate) && !string.IsNullOrEmpty(EndDate))
             {
-                sqlTemp = sqlTemp + "and (開獎日期 between @startdate and @enddate) ";
+                sqlTemp = sqlTemp + "and (DrawDate between @startdate and @enddate) ";
             }
 
             sql = string.Format(sql, sqlTemp);
@@ -258,30 +251,30 @@ where (號碼1=@num or 號碼2=@num or  號碼3=@num or 號碼4=@num or 號碼5=
             param.Add("enddate", EndDate);
 
 
-            return _dbDapper.QueryList<LotNumber>(sql, param);
+            return _dbDapper.QueryList<LotNumber5>(sql, param);
         }
 
-        public bool InputLotNumber_EveryDay(LotNumber data)
+        public bool InputLotNumber_EveryDay(LotNumber5 data)
         {
             var sql = @"
 INSERT INTO [dbo].[EnLotEveryDay]
-           ([期數]
-           ,[開獎日期]
-           ,[星期]
-           ,[號碼1]
-           ,[號碼2]
-           ,[號碼3]
-           ,[號碼4]
-           ,[號碼5])
+           ([Period]
+           ,[DrawDate]
+           ,[Week]
+           ,[Num1]
+           ,[Num2]
+           ,[Num3]
+           ,[Num4]
+           ,[Num5])
      VALUES
-           (@期數
-           ,@開獎日期
-           ,@星期
-           ,@號碼1
-           ,@號碼2
-           ,@號碼3
-           ,@號碼4
-           ,@號碼5)
+           (@Period
+           ,@DrawDate
+           ,@Week
+           ,@Num1
+           ,@Num2
+           ,@Num3
+           ,@Num4
+           ,@Num5)
 ";
             return _dbDapper.NonQuerySQL(sql, data) > 0;
         }
@@ -291,9 +284,10 @@ INSERT INTO [dbo].[EnLotEveryDay]
             IF(NOT EXISTS(SELECT top 1 * FROM [dbo].[EnLotEveryDay_StoredCount] ))
 BEGIN
 	 insert into [dbo].[EnLotEveryDay_StoredCount]
-	(日期,[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13]
-      ,[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26]
-      ,[27],[28],[29],[30],[31],[32],[33],[34],[35],[36],[37],[38],[39])
+	(DrawDate,Num01,Num02,Num03,Num04,Num05,Num06,Num07,Num08,Num09,Num10
+      ,Num11,Num12,Num13,Num14,Num15,Num16,Num17,Num18,Num19,Num20
+      ,Num21,Num22,Num23,Num24,Num25,Num26,Num27,Num28,Num29,Num30
+      ,Num31,Num32,Num33,Num34,Num35,Num36,Num37,Num38,Num39)
 	  VALUES
 	  ( @data,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 END	
@@ -301,67 +295,67 @@ END
 BEGIN
     insert into [dbo].[EnLotEveryDay_StoredCount]
 SELECT TOP (1) @data
-      ,[01]+1 as [01]
-      ,[02]+1 as [02]
-      ,[03]+1 as [03]
-      ,[04]+1 as [04]
-      ,[05]+1 as [05]
-      ,[06]+1 as [06]
-      ,[07]+1 as [07]
-      ,[08]+1 as [08]
-      ,[09]+1 as [09]
-      ,[10]+1 as [10]
-      ,[11]+1 as [11]
-      ,[12]+1 as [12]
-      ,[13]+1 as [13]
-      ,[14]+1 as [14]
-      ,[15]+1 as [15]
-      ,[16]+1 as [16]
-      ,[17]+1 as [17]
-      ,[18]+1 as [18]
-      ,[19]+1 as [19]
-      ,[20]+1 as [20]
-      ,[21]+1 as [21]
-      ,[22]+1 as [22]
-      ,[23]+1 as [23]
-      ,[24]+1 as [24]
-      ,[25]+1 as [25]
-      ,[26]+1 as [26]
-      ,[27]+1 as [27]
-      ,[28]+1 as [28]
-      ,[29]+1 as [29]
-      ,[30]+1 as [30]
-      ,[31]+1 as [31]
-      ,[32]+1 as [32]
-      ,[33]+1 as [33]
-      ,[34]+1 as [34]
-      ,[35]+1 as [35]
-      ,[36]+1 as [36]
-      ,[37]+1 as [37]
-      ,[38]+1 as [38]
-      ,[39]+1 as [39]
-       FROM [dbo].[EnLotEveryDay_StoredCount] order by 日期 desc
+      ,[Num01]+1 
+      ,[Num02]+1
+      ,[Num03]+1
+      ,[Num04]+1 
+      ,[Num05]+1
+      ,[Num06]+1
+      ,[Num07]+1 
+      ,[Num08]+1 
+      ,[Num09]+1 
+      ,[Num10]+1 
+      ,[Num11]+1 
+      ,[Num12]+1 
+      ,[Num13]+1 
+      ,[Num14]+1 
+      ,[Num15]+1 
+      ,[Num16]+1 
+      ,[Num17]+1 
+      ,[Num18]+1
+      ,[Num19]+1 
+      ,[Num20]+1 
+      ,[Num21]+1 
+      ,[Num22]+1 
+      ,[Num23]+1 
+      ,[Num24]+1 
+      ,[Num25]+1 
+      ,[Num26]+1
+      ,[Num27]+1 
+      ,[Num28]+1 
+      ,[Num29]+1 
+      ,[Num30]+1 
+      ,[Num31]+1 
+      ,[Num32]+1 
+      ,[Num33]+1 
+      ,[Num34]+1 
+      ,[Num35]+1 
+      ,[Num36]+1
+      ,[Num37]+1 
+      ,[Num38]+1 
+      ,[Num39]+1 
+       FROM [dbo].[EnLotEveryDay_StoredCount] order by DrawDate desc
 END";
             var param = new Dictionary<string, object>();
             param.Add("data", data);
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
-        public bool UpdateCopyNumber_EveryDay(LotNumber data)
+        public bool UpdateCopyNumber_EveryDay(LotNumber5 data)
         {
             var sql = @"
             DECLARE @TSQL NVARCHAR(4000)
 SET @TSQL =	'update [dbo].[EnLotEveryDay_StoredCount]
 set ' + @num1 + '=0,' + @num2 + '=0,' + @num3 +'=0,' + @num4 + '=0,' + @num5 + '=0
-where 日期=' + @date
+where DrawDate=' + @date
 EXEC SP_EXECUTESQL @TSQL";
             var param = new Dictionary<string, object>();
-            param.Add("num1", "[" + data.號碼1 + "]");
-            param.Add("num2", "[" + data.號碼2 + "]");
-            param.Add("num3", "[" + data.號碼3 + "]");
-            param.Add("num4", "[" + data.號碼4 + "]");
-            param.Add("num5", "[" + data.號碼5 + "]");
-            param.Add("date", data.開獎日期);
+            param.Add("num1", "[Num" + data.Num1 + "]");
+            param.Add("num2", "[Num" + data.Num2 + "]");
+            param.Add("num3", "[Num" + data.Num3 + "]");
+            param.Add("num4", "[Num" + data.Num4 + "]");
+            param.Add("num5", "[Num" + data.Num5 + "]");
+            param.Add("date", data.DrawDate);
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
@@ -374,45 +368,45 @@ EXEC SP_EXECUTESQL @TSQL";
            ([DrawDate]
            ,[StatisticalDate_ST]
            ,[StatisticalDate_ED]
-           ,[01]
-           ,[02]
-           ,[03]
-           ,[04]
-           ,[05]
-           ,[06]
-           ,[07]
-           ,[08]
-           ,[09]
-           ,[10]
-           ,[11]
-           ,[12]
-           ,[13]
-           ,[14]
-           ,[15]
-           ,[16]
-           ,[17]
-           ,[18]
-           ,[19]
-           ,[20]
-           ,[21]
-           ,[22]
-           ,[23]
-           ,[24]
-           ,[25]
-           ,[26]
-           ,[27]
-           ,[28]
-           ,[29]
-           ,[30]
-           ,[31]
-           ,[32]
-           ,[33]
-           ,[34]
-           ,[35]
-           ,[36]
-           ,[37]
-           ,[38]
-           ,[39])
+           ,[Num01]
+           ,[Num02]
+           ,[Num03]
+           ,[Num04]
+           ,[Num05]
+           ,[Num06]
+           ,[Num07]
+           ,[Num08]
+           ,[Num09]
+           ,[Num10]
+           ,[Num11]
+           ,[Num12]
+           ,[Num13]
+           ,[Num14]
+           ,[Num15]
+           ,[Num16]
+           ,[Num17]
+           ,[Num18]
+           ,[Num19]
+           ,[Num20]
+           ,[Num21]
+           ,[Num22]
+           ,[Num23]
+           ,[Num24]
+           ,[Num25]
+           ,[Num26]
+           ,[Num27]
+           ,[Num28]
+           ,[Num29]
+           ,[Num30]
+           ,[Num31]
+           ,[Num32]
+           ,[Num33]
+           ,[Num34]
+           ,[Num35]
+           ,[Num36]
+           ,[Num37]
+           ,[Num38]
+           ,[Num39])
      VALUES
            (@DrawDate
            ,@StatisticalDate_ST

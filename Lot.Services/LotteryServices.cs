@@ -19,11 +19,11 @@ namespace Study.Services
         /// </summary>
         /// <param name="newCount"></param>
         /// <returns></returns>
-        public List<LotNumber> GetNumberTopServices_539(string newCount)
+        public List<LotNumber5> GetNumberTopServices_539(string newCount)
         {
             return _sqlRepository.GetLotNumberNewTop(newCount);
         }
-        public List<LotNumber> GetNumberTopServices_EveryDay(string newCount)
+        public List<LotNumber5> GetNumberTopServices_EveryDay(string newCount)
         {
             return _sqlRepository.GetLotNumberNewTop_EveryDay(newCount);
         }
@@ -42,25 +42,20 @@ namespace Study.Services
         /// <param name="StartDate"></param>
         /// <param name="EndDate"></param>
         /// <returns></returns>
-        public List<LotNumber> GetNumberServices(string StartDate, string EndDate)
-        {
-            return _sqlRepository.GetLotNumber(StartDate, EndDate);
-        }
-
-        public List<LotNumber> GetNumberServices_539()
+        public List<LotNumber5> GetNumberServices_539()
         {
             return _sqlRepository.GetLotNumber();
         }
-        public List<LotNumber> GetNumberServices_EveryDay()
+        public List<LotNumber5> GetNumberServices_EveryDay()
         {
             return _sqlRepository.GetLotNumber_EveryDay();
         }
 
-        public List<LotNumber> GetNumberListServices_539(string selectnum, string StartDate, string EndDate)
+        public List<LotNumber5> GetNumberListServices_539(string selectnum, string StartDate, string EndDate)
         {
             return _sqlRepository.GetSelectLotNumber(selectnum, StartDate, EndDate);
         }
-        public List<LotNumber> GetNumberListServices_EveryDay(string selectnum, string StartDate, string EndDate)
+        public List<LotNumber5> GetNumberListServices_EveryDay(string selectnum, string StartDate, string EndDate)
         {
             return _sqlRepository.GetSelectLotNumber_EveryDay(selectnum, StartDate, EndDate);
         }
@@ -75,28 +70,28 @@ namespace Study.Services
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool AddNumberServices_539(LotNumber data)
+        public bool AddNumberServices_539(LotNumber5 data)
         {
             bool success = false;
 
             using (var scope = new TransactionScope())
             {
                 success = _sqlRepository.InputLotNumber(data) &&
-                          _sqlRepository.InsertCopyNumber(data.開獎日期) && 
+                          _sqlRepository.InsertCopyNumber(data.DrawDate) && 
                           _sqlRepository.UpdateCopyNumber(data);
                 if (success)
                     scope.Complete();
             }
             return success;
         }
-        public bool AddNumberServices_EveryDay(LotNumber data, SelectHot30 hot30)
+        public bool AddNumberServices_EveryDay(LotNumber5 data, SelectHot30 hot30)
         {
             bool success = false;
 
             using (var scope = new TransactionScope())
             {
                 success = _sqlRepository.InputLotNumber_EveryDay(data) &&
-                          _sqlRepository.InsertCopyNumber_EveryDay(data.開獎日期) &&
+                          _sqlRepository.InsertCopyNumber_EveryDay(data.DrawDate) &&
                           _sqlRepository.UpdateCopyNumber_EveryDay(data) &&
                           _sqlRepository.InsertHot30_EveryDay(hot30);
                 if (success)
