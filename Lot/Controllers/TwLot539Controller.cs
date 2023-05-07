@@ -133,6 +133,27 @@ namespace Lot.Controllers
 
         #endregion
 
+        #region 未開次數
+        [HttpGet]
+        public ActionResult UnopenedCount()
+        {
+            SelectLotNumber model = new SelectLotNumber();
+            dynamic data = _lotteryService.GetStoredCount_539();
+            model.selectNumberCountListOrderBy = new Dictionary<int?, int?>();
+            foreach (KeyValuePair<string, dynamic> pair in data)
+            {
+                if (pair.Key.Contains("Num"))
+                {
+                    string key = pair.Key.Replace("Num", "");
+                    model.selectNumberCountListOrderBy.Add(int.Parse(key), int.Parse(pair.Value));
+                }
+            }
+            model.selectNumberCountListOrderBy = model.selectNumberCountListOrderBy.OrderByDescending(d => d.Value).ToDictionary(dkey => dkey.Key, dvalue => dvalue.Value);
+            ViewBag.MaxDate = data.DrawDate;
+            return View(model);
+        }
+        #endregion
+
         #region 新增號碼
         [HttpGet]
         public ActionResult AddNumber()

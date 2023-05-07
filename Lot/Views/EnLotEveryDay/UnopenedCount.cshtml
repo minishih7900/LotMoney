@@ -1,0 +1,145 @@
+﻿@model  Lot.Models.Models.SelectLotNumber
+@{
+    ViewBag.Title = "加州天天樂-未開次數";
+}
+
+@section css{
+    <style type="text/css">
+        .table-hover thead tr th, .table-hover tbody tr td {
+            text-align: center;
+        }
+
+        .table-hover tbody tr th {
+            background-color: aliceblue;
+            text-align: center;
+        }
+    </style>
+}
+
+<div class="row">
+    @Html.Partial("_EnLotEveryDayMenuPartial", "未開次數")
+</div>
+<hr />
+<div class="container">
+    <div>
+        最大日期為： @ViewBag.MaxDate
+    </div>
+    <!------------------------------------------------------------------------------------->
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <table class="table table-hover" style="width:100%">
+                <thead style="background-color:#BBFFEE">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">號碼</th>
+                        <th scope="col">次數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            <tr id="num_@(i + 1)">
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Key</td>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Value</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-3">
+            <table class="table table-hover" style="width:100%">
+                <thead style="background-color:#BBFFEE">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">號碼</th>
+                        <th scope="col">次數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        for (int i = 10; i < 20; i++)
+                        {
+                            <tr id="num_@(i + 1)">
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Key</td>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Value</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-3">
+            <table class="table table-hover" style="width:100%">
+                <thead style="background-color:#BBFFEE">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">號碼</th>
+                        <th scope="col">次數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        for (int i = 20; i < 30; i++)
+                        {
+                            <tr id="num_@(i + 1)">
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Key</td>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Value</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-3">
+            <table class="table table-hover" style="width:100%">
+                <thead style="background-color:#BBFFEE">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">號碼</th>
+                        <th scope="col">次數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        for (int i = 30; i < 39; i++)
+                        {
+                            <tr id="num_@(i + 1)">
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Key</td>
+                                <td>@Model.selectNumberCountListOrderBy.ElementAt(i).Value</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $("tr[id^='num_']").each(function (data) {
+            if (data < 10) {
+                $(this).children('td').css("color", "red");
+                $(this).children('td').css("font-weight", "bold");
+            }
+        }
+        )
+    </script>
+
+}

@@ -37,6 +37,19 @@ namespace Study.Services
             return _sqlRepository.GetHot30_EveryDay(newCount);
         }
         /// <summary>
+        /// 取得未開次數
+        /// </summary>
+        /// <returns></returns>
+        public dynamic GetStoredCount_539()
+        {
+            return _sqlRepository.GetStoredCount();
+        }
+        public dynamic GetStoredCount_EveryDay()
+        {
+            return _sqlRepository.GetStoredCount_EveryDay();
+        }
+
+        /// <summary>
         /// 依開始日期結束日期查詢筆數
         /// </summary>
         /// <param name="StartDate"></param>

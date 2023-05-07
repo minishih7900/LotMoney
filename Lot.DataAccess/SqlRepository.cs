@@ -69,6 +69,21 @@ order by Period desc";
 
             return _dbDapper.QueryList<LotNumber5>(sql, null);
         }
+        public dynamic GetStoredCount()
+        {
+            var sql = "";
+
+            sql = @"
+SELECT TOP (1) DrawDate,  
+Num01,  Num02, Num03, Num04, Num05, Num06, Num07, Num08, Num09,
+Num10, Num11, Num12, Num13, Num14, Num15, Num16, Num17, Num18, Num19, 
+Num20, Num21, Num22, Num23, Num24, Num25, Num26, Num27, Num28, Num29,
+Num30, Num31, Num32, Num33, Num34, Num35, Num36, Num37, Num38, Num39
+FROM              TwLot539_StoredCount
+ORDER BY   DrawDate DESC ";
+
+            return _dbDapper.QueryList<dynamic>(sql, null).FirstOrDefault();
+        }
         public bool InputLotNumber(LotNumber5 data)
         {
             var sql = @"
@@ -222,6 +237,21 @@ WHERE DrawDate=@date ";
             param.Add("date", date);
 
             return _dbDapper.QueryList<dynamic>(sql, param).FirstOrDefault();
+        }
+        public dynamic GetStoredCount_EveryDay()
+        {
+            var sql = "";
+
+            sql = @"
+SELECT TOP (1) DrawDate,  
+Num01,  Num02, Num03, Num04, Num05, Num06, Num07, Num08, Num09,
+Num10, Num11, Num12, Num13, Num14, Num15, Num16, Num17, Num18, Num19, 
+Num20, Num21, Num22, Num23, Num24, Num25, Num26, Num27, Num28, Num29,
+Num30, Num31, Num32, Num33, Num34, Num35, Num36, Num37, Num38, Num39
+FROM              EnLotEveryDay_StoredCount
+ORDER BY   DrawDate DESC ";
+
+            return _dbDapper.QueryList<dynamic>(sql,null).FirstOrDefault();
         }
         public List<LotNumber5> GetLotNumber_EveryDay()
         {

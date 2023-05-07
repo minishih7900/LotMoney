@@ -211,6 +211,9 @@
     <Content Include="Views\EnLotEveryDay\QueryNumber.cshtml" />
     <Content Include="Views\TwLot539\QuerySelectNumberCount.cshtml" />
     <Content Include="Views\EnLotEveryDay\QuerySelectNumberCount.cshtml" />
+    <Content Include="Views\EnLotEveryDay\QueryNumberNoPage.cshtml" />
+    <Content Include="Views\EnLotEveryDay\UnopenedCount.cshtml" />
+    <Content Include="Views\TwLot539\UnopenedCount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

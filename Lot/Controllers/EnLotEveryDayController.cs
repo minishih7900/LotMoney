@@ -7,6 +7,7 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Reflection;
 
 namespace Lot.Controllers
 {
@@ -43,6 +44,40 @@ namespace Lot.Controllers
             else
             {
                 data.LotNumber = DBdata.OrderByDescending(x => x.DrawDate).ToPagedList(data.Page > 0 ? data.Page - 1 : 0, PageSize);
+            }
+            return View(data);
+        }
+        #endregion
+
+        #region 查詢號碼不分頁
+        [HttpGet]
+        public ActionResult QueryNumberNoPage()
+        {
+            // 進入搜尋頁面 不主動撈取資料
+            Lottery5ViewModel viewModel = new Lottery5ViewModel();
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult QueryNumberNoPage(Lottery5ViewModel data)
+        {
+            // 從資料庫撈資料
+            List<LotNumber5> DBdata = _lotteryService.GetNumberServices_EveryDay();
+
+            //
+            if (!string.IsNullOrEmpty(data.Submit))
+            {
+                data.LotNumberNoPage = DBdata.Where(p => p.DrawDate.StartsWith(data.Submit)).ToList();
+                return View(data);
+            }
+
+            // 當日期符合開始與結束日期
+            if (!string.IsNullOrWhiteSpace(data.StartDate) && !string.IsNullOrWhiteSpace(data.EndDate))
+            {
+                data.LotNumberNoPage = DBdata.Where(p => p.DrawDate.CompareTo(data.StartDate) >= 0 && p.DrawDate.CompareTo(data.EndDate) <= 0).OrderBy(m => m.DrawDate).ToList();
+            }
+            else
+            {
+                data.LotNumberNoPage = DBdata.OrderBy(x => x.DrawDate).ToList();
             }
             return View(data);
         }
@@ -110,12 +145,30 @@ namespace Lot.Controllers
                    
                 }
             }
-            
-
-
             return View(model);
         }
 
+        #endregion
+
+        #region 未開次數
+        [HttpGet]
+        public ActionResult UnopenedCount()
+        {
+            SelectLotNumber model = new SelectLotNumber();
+            dynamic data = _lotteryService.GetStoredCount_EveryDay();
+            model.selectNumberCountListOrderBy = new Dictionary<int?, int?>();
+            foreach (KeyValuePair<string, dynamic> pair in data)
+            {
+                if (pair.Key.Contains("Num"))
+                {
+                    string key = pair.Key.Replace("Num", "");
+                    model.selectNumberCountListOrderBy.Add(int.Parse(key), int.Parse(pair.Value));
+                }
+            }
+            model.selectNumberCountListOrderBy = model.selectNumberCountListOrderBy.OrderByDescending(d => d.Value).ToDictionary(dkey => dkey.Key, dvalue => dvalue.Value);
+            ViewBag.MaxDate = data.DrawDate;
+            return View(model);
+        }
         #endregion
 
         #region 新增號碼
