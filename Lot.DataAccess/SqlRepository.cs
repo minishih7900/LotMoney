@@ -84,6 +84,30 @@ ORDER BY   DrawDate DESC ";
 
             return _dbDapper.QueryList<dynamic>(sql, null).FirstOrDefault();
         }
+        public dynamic GetHot30(string date)
+        {
+            var sql = "";
+
+            sql = @"
+SELECT  DrawDate, StatisticalDate_ST, StatisticalDate_ED, 
+Num01,  Num02, Num03, Num04, Num05, Num06, Num07, Num08, Num09,
+Num10, Num11, Num12, Num13, Num14, Num15, Num16, Num17, Num18, Num19, 
+Num20, Num21, Num22, Num23, Num24, Num25, Num26, Num27, Num28, Num29,
+Num30, Num31, Num32, Num33, Num34, Num35, Num36, Num37, Num38, Num39
+FROM              TwLot539_Hot30
+WHERE DrawDate=@date ";
+
+            var param = new Dictionary<string, object>();
+            param.Add("date", date);
+
+            return _dbDapper.QueryList<dynamic>(sql, param).FirstOrDefault();
+        }
+        public string GetMaxNo(string dbName)
+        {
+            var sql = $"select max(Period) from [dbo].[{dbName}]";
+
+            return _dbDapper.ExecuteScalarSQL<string>(sql, null);
+        }
         public bool InputLotNumber(LotNumber5 data)
         {
             var sql = @"
@@ -107,13 +131,6 @@ INSERT INTO [dbo].[TwLot539]
            ,@Num5)
 ";
             return _dbDapper.NonQuerySQL(sql, data) > 0;
-        }
-
-        public string GetMaxNo(string dbName)
-        {
-            var sql =  $"select max(Period) from [dbo].[{dbName}]";
-            
-            return _dbDapper.ExecuteScalarSQL<string>(sql, null);
         }
         public bool InsertCopyNumber(string data)
         {
@@ -178,7 +195,137 @@ END";
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }
+        public bool InsertHot30(SelectHot30 data)
+        {
+            var sql = @"
+            
+    INSERT INTO [dbo].[TwLot539_Hot30]
+           ([DrawDate]
+           ,[StatisticalDate_ST]
+           ,[StatisticalDate_ED]
+           ,[Num01]
+           ,[Num02]
+           ,[Num03]
+           ,[Num04]
+           ,[Num05]
+           ,[Num06]
+           ,[Num07]
+           ,[Num08]
+           ,[Num09]
+           ,[Num10]
+           ,[Num11]
+           ,[Num12]
+           ,[Num13]
+           ,[Num14]
+           ,[Num15]
+           ,[Num16]
+           ,[Num17]
+           ,[Num18]
+           ,[Num19]
+           ,[Num20]
+           ,[Num21]
+           ,[Num22]
+           ,[Num23]
+           ,[Num24]
+           ,[Num25]
+           ,[Num26]
+           ,[Num27]
+           ,[Num28]
+           ,[Num29]
+           ,[Num30]
+           ,[Num31]
+           ,[Num32]
+           ,[Num33]
+           ,[Num34]
+           ,[Num35]
+           ,[Num36]
+           ,[Num37]
+           ,[Num38]
+           ,[Num39])
+     VALUES
+           (@DrawDate
+           ,@StatisticalDate_ST
+           ,@StatisticalDate_ED
+           ,@01
+           ,@02
+           ,@03
+           ,@04
+           ,@05
+           ,@06
+           ,@07
+           ,@08
+           ,@09
+           ,@10
+           ,@11
+           ,@12
+           ,@13
+           ,@14
+           ,@15
+           ,@16
+           ,@17
+           ,@18
+           ,@19
+           ,@20
+           ,@21
+           ,@22
+           ,@23
+           ,@24
+           ,@25
+           ,@26
+           ,@27
+           ,@28
+           ,@29
+           ,@30
+           ,@31
+           ,@32
+           ,@33
+           ,@34
+           ,@35
+           ,@36
+           ,@37
+           ,@38
+           ,@39)
+";
+            var param = new Dictionary<string, object>();
+            param.Add("DrawDate", data.DrawDate);
+            param.Add("StatisticalDate_ST", data.StatisticalDate_ST);
+            param.Add("StatisticalDate_ED", data.StatisticalDate_ED);
+            for (int i = 1; i < 40; i++)
+            {
+                param.Add(i.ToString().PadLeft(2, '0'), data.selectNumberCountList[i]);
+            }
 
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
+        }
+        public bool InsertStoredCountPer(LotNumber5 data)
+        {
+            var sql = @"
+DECLARE @TSQL NVARCHAR(4000)
+	  SET @TSQL =	'insert into [dbo].[TwLot539_StoredCountPer]
+select top 1 DrawDate, Num'+ @num1+'-1,Num'+@num2+'-1,Num'+@num3+'-1,Num'+@num4+'-1,Num'+@num5+'-1,
+CAST(Case when CAST(Num'+@num1+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num2+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num3+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num4+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num5+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) as less,
+CAST(Case when CAST(Num'+@num1+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num2+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num3+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num4+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num5+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) as LC
+from [dbo].[TwLot539_StoredCount]
+where DrawDate=' + @DrawDate
+	EXEC SP_EXECUTESQL @TSQL";
+            var param = new Dictionary<string, object>();
+            param.Add("num1", data.Num1);
+            param.Add("num2", data.Num2);
+            param.Add("num3", data.Num3);
+            param.Add("num4", data.Num4);
+            param.Add("num5", data.Num5);
+            param.Add("DrawDate", data.DrawDate);
+
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
+        }
         public bool UpdateCopyNumber(LotNumber5 data)
         {
             var sql = @"
@@ -368,6 +515,35 @@ SELECT TOP (1) @data
 END";
             var param = new Dictionary<string, object>();
             param.Add("data", data);
+
+            return _dbDapper.NonQuerySQL(sql, param) > 0;
+        }
+        public bool InsertStoredCountPer_EveryDay(LotNumber5 data)
+        {
+            var sql = @"
+DECLARE @TSQL NVARCHAR(4000)
+	  SET @TSQL =	'insert into [dbo].[EnLotEveryDay_StoredCountPer]
+select top 1 DrawDate, Num'+ @num1+'-1,Num'+@num2+'-1,Num'+@num3+'-1,Num'+@num4+'-1,Num'+@num5+'-1,
+CAST(Case when CAST(Num'+@num1+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num2+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num3+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num4+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num5+'-1 AS INT) <= ''10'' Then ''1'' Else ''0'' end as int) as less,
+CAST(Case when CAST(Num'+@num1+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num2+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num3+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num4+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) + 
+CAST(Case when CAST(Num'+@num5+'-1 AS INT) = ''0'' Then ''1'' Else ''0'' end as int) as LC
+from [dbo].[EnLotEveryDay_StoredCount]
+where DrawDate=' + @DrawDate
+	EXEC SP_EXECUTESQL @TSQL";
+            var param = new Dictionary<string, object>();
+            param.Add("num1", data.Num1);
+            param.Add("num2", data.Num2);
+            param.Add("num3", data.Num3);
+            param.Add("num4", data.Num4);
+            param.Add("num5", data.Num5);
+            param.Add("DrawDate", data.DrawDate);
 
             return _dbDapper.NonQuerySQL(sql, param) > 0;
         }

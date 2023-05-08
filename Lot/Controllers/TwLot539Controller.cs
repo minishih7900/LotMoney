@@ -128,6 +128,22 @@ namespace Lot.Controllers
             SumNumberCount(model, numList);
             ViewBag.Message = "查詢期間為：" + numList.Select(d => d.DrawDate).Min() + "~" + numList.Select(d => d.DrawDate).Max();
             ViewBag.Data = numList.Count;
+
+            if (PeriodNum == "30")
+            {
+                dynamic data = _lotteryService.GetHot30_539(numList.Select(d => d.DrawDate).Max());
+                model.Hot30CountList = new Dictionary<int?, int?>();
+                foreach (KeyValuePair<string, dynamic> pair in data)
+                {
+                    if (pair.Key.Contains("Num"))
+                    {
+                        string key = pair.Key.Replace("Num", "");
+                        model.Hot30CountList.Add(int.Parse(key), int.Parse(pair.Value));
+
+                    }
+
+                }
+            }
             return View(model);
         }
 
@@ -173,7 +189,19 @@ namespace Lot.Controllers
                 AddStartZone(data);
                 data.Period = data.DrawDate;
                 data.Week = YYYYMMDDtoDayOfWeek(data.DrawDate);
-                if (_lotteryService.AddNumberServices_539(data))
+
+                //追加儲存30期熱門資料
+                SelectLotNumber model = new SelectLotNumber();
+                List<LotNumber5> numList = new List<LotNumber5>();
+                numList = _lotteryService.GetNumberTopServices_539("30");
+                SumNumberCount(model, numList);
+                SelectHot30 hot30 = new SelectHot30();
+                hot30.DrawDate = data.DrawDate;
+                hot30.StatisticalDate_ST = numList.Select(d => d.DrawDate).Min();
+                hot30.StatisticalDate_ED = numList.Select(d => d.DrawDate).Max();
+                hot30.selectNumberCountList = model.selectNumberCountListOrderBy;
+
+                if (_lotteryService.AddNumberServices_539(data, hot30))
                 {
                     TempData["message"] = "寫入成功";
                     return RedirectToAction("AddNumber");

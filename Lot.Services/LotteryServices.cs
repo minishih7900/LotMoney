@@ -32,6 +32,10 @@ namespace Study.Services
         /// </summary>
         /// <param name="newCount"></param>
         /// <returns></returns>
+        public dynamic GetHot30_539(string newCount)
+        {
+            return _sqlRepository.GetHot30(newCount);
+        }
         public dynamic GetHot30_EveryDay(string newCount)
         {
             return _sqlRepository.GetHot30_EveryDay(newCount);
@@ -83,15 +87,17 @@ namespace Study.Services
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool AddNumberServices_539(LotNumber5 data)
+        public bool AddNumberServices_539(LotNumber5 data, SelectHot30 hot30)
         {
             bool success = false;
 
             using (var scope = new TransactionScope())
             {
                 success = _sqlRepository.InputLotNumber(data) &&
-                          _sqlRepository.InsertCopyNumber(data.DrawDate) && 
-                          _sqlRepository.UpdateCopyNumber(data);
+                          _sqlRepository.InsertCopyNumber(data.DrawDate) &&
+                          _sqlRepository.InsertStoredCountPer(data) &&
+                          _sqlRepository.UpdateCopyNumber(data) &&
+                          _sqlRepository.InsertHot30(hot30);
                 if (success)
                     scope.Complete();
             }
@@ -105,6 +111,7 @@ namespace Study.Services
             {
                 success = _sqlRepository.InputLotNumber_EveryDay(data) &&
                           _sqlRepository.InsertCopyNumber_EveryDay(data.DrawDate) &&
+                          _sqlRepository.InsertStoredCountPer_EveryDay(data) &&
                           _sqlRepository.UpdateCopyNumber_EveryDay(data) &&
                           _sqlRepository.InsertHot30_EveryDay(hot30);
                 if (success)
